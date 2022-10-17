@@ -764,7 +764,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 906458087}
   m_LocalRotation: {x: -0, y: 0.3001212, z: -0, w: 0.9539011}
-  m_LocalPosition: {x: -8.2, y: -0.5, z: 10.5}
+  m_LocalPosition: {x: -7.22, y: -0.5, z: 11.45}
   m_LocalScale: {x: 8.058, y: 3, z: 6.4585004}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -969,6 +969,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   viewPoint: {fileID: 691684379}
+  mouseSensitivity: 1
 --- !u!1 &1359357397
 GameObject:
   m_ObjectHideFlags: 0
@@ -1108,7 +1109,7 @@ MeshRenderer:
   m_GameObject: {fileID: 2060305673}
   m_Enabled: 1
   m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
