@@ -16,9 +16,18 @@ public class PlayerController : MonoBehaviour
     private Vector2 mouseInput;
     private Vector3 moveDir, movement;
     private float walkSpeed, runSpeed, activeMoveSpeed;
-    public CharacterController charCon;
+    private float jumpForce, gravityMod;
 
     public bool invertLook;
+    private bool isGrounded;
+
+    public CharacterController charCon;
+    public Transform groundCheckPoint;
+    public LayerMask groundLayer;
+
+    private Camera cam;
+
+    #region Main Function Calls
 
     private void Start()
     {
@@ -27,21 +36,42 @@ public class PlayerController : MonoBehaviour
 
     private void LateUpdate()
     {
+        MovingCamera();
+    }
+
+    private void Update()
+    {
         PlayerView();
+        PlayerMovement();
     }
 
     private void FixedUpdate()
     {
-        PlayerMovement();
+        PlayerPhysics();
     }
+
+    #endregion
 
     private void Initialize()
     {
-        //Hide Mouse cursor
+        //Setup Camera
+        cam = Camera.main;
+
+        //Hide Mouse cursor while playing
         Cursor.lockState = CursorLockMode.Locked;
+
+        //Setup Player Properties
         mouseSensitivity = 8f;
-        walkSpeed = 5f;
-        runSpeed = 8f;
+        walkSpeed = 3f;
+        runSpeed = 5f;
+        jumpForce = 5f;
+        gravityMod = 2f;
+    }
+
+    private void MovingCamera()
+    {
+        cam.transform.position = viewPoint.transform.position;
+        cam.transform.rotation = viewPoint.transform.rotation;
     }
 
     private void PlayerView()
@@ -74,13 +104,41 @@ public class PlayerController : MonoBehaviour
     private void PlayerMovement()
     {
         moveDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical"));
-        movement = ((transform.forward * moveDir.z) + (transform.right * moveDir.x)).normalized;
 
         if (Input.GetKey(KeyCode.LeftShift))
             activeMoveSpeed = runSpeed;
         else
             activeMoveSpeed = walkSpeed;
 
-        charCon.Move(movement * activeMoveSpeed * Time.fixedDeltaTime);
+        /*Note
+        * vector transform.forward and transform.right have y value is 0, then it will reset movement.y every call
+        * need to create yVelocity to store previous call's movement.y
+        */
+
+        float yVelocity = movement.y;
+        movement = ((transform.forward * moveDir.z) + (transform.right * moveDir.x)).normalized * activeMoveSpeed;
+        movement.y = yVelocity;
+
+
+        //Reset movement.y (gravity) when player is on ground
+        if (charCon.isGrounded)
+        {
+            movement.y = 0;
+        }
+
+        if (isGrounded && Input.GetKeyDown(KeyCode.Space))
+        {
+            movement.y = jumpForce;
+        }
+
+        charCon.Move(movement * Time.fixedDeltaTime);
+    }
+
+    private void PlayerPhysics()
+    {
+        //Ground check
+        isGrounded = Physics.Raycast(groundCheckPoint.position, Vector3.down, 0.25f, groundLayer);
+        //Gravity
+        movement.y += Physics.gravity.y * Time.fixedDeltaTime * gravityMod;
     }
 }
