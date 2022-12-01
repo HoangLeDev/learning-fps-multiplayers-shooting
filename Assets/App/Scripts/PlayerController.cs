@@ -1,3 +1,9 @@
+/*
+ *Note:
+ *
+ */
+
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,19 +12,46 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Transform viewPoint;
-    public float mouseSensitivity = 1f;
+    public float mouseSensitivity;
     private float verticalRotStore;
     private Vector2 mouseInput;
+    private Vector3 moveDir, movement;
+    private float moveSpeed;
 
     public bool invertLook;
 
     private void Start()
     {
-        //Hide Mouse cursor
-        Cursor.lockState = CursorLockMode.Locked;
+        Initialize();
     }
 
-    private void Update()
+    private void LateUpdate()
+    {
+        PlayerView();
+    }
+
+    private void FixedUpdate()
+    {
+        PlayerMovement();
+    }
+
+    private void Initialize()
+    {
+        //Hide Mouse cursor
+        Cursor.lockState = CursorLockMode.Locked;
+        mouseSensitivity = 8f;
+        moveSpeed = 5f;
+    }
+
+    private void PlayerMovement()
+    {
+        moveDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical"));
+        movement = ((transform.forward * moveDir.z) + (transform.right * moveDir.x)).normalized;
+
+        transform.position += movement * moveSpeed * Time.fixedDeltaTime;
+    }
+
+    private void PlayerView()
     {
         mouseInput = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y")) * mouseSensitivity;
 
