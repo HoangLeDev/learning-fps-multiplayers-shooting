@@ -25,6 +25,8 @@ public class PlayerController : MonoBehaviour
     public Transform groundCheckPoint;
     public LayerMask groundLayer;
 
+    [SerializeField] private PlayerShooting playerShootManager;
+
     private Camera cam;
 
     #region Main Function Calls
@@ -43,6 +45,7 @@ public class PlayerController : MonoBehaviour
     {
         PlayerView();
         PlayerMovement();
+        playerShootManager.ShootExecute();
     }
 
     private void FixedUpdate()

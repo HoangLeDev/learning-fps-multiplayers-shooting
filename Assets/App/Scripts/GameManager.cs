@@ -6,10 +6,10 @@ public class GameManager : MonoBehaviour
 {
     void Update()
     {
-        GameInputSetting();
+        AdditionGameInputSetting();
     }
 
-    private void GameInputSetting()
+    private void AdditionGameInputSetting()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
