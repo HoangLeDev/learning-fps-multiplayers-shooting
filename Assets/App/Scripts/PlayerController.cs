@@ -15,11 +15,12 @@ public class PlayerController : MonoBehaviour
     private float verticalRotStore;
     private Vector2 mouseInput;
     private Vector3 moveDir, movement;
-    private float walkSpeed, runSpeed, activeMoveSpeed;
+    private float walkSpeed, runSpeed, crunchSpeed, activeMoveSpeed;
     private float jumpForce, gravityMod;
 
     public bool invertLook;
     private bool isGrounded;
+    private bool isCrunch;
 
     public CharacterController charCon;
     public Transform groundCheckPoint;
@@ -64,11 +65,12 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
 
         //Setup Player Properties
-        mouseSensitivity = 8f;
-        walkSpeed = 3f;
-        runSpeed = 5f;
+        mouseSensitivity = 5f;
+        walkSpeed = 1f;
+        runSpeed = 1.5f;
         jumpForce = 5f;
         gravityMod = 2f;
+        crunchSpeed = 0.3f;
     }
 
     private void MovingCamera()
@@ -108,10 +110,27 @@ public class PlayerController : MonoBehaviour
     {
         moveDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical"));
 
-        if (Input.GetKey(KeyCode.LeftShift))
+        //Run or Walk
+        if (Input.GetKey(KeyCode.LeftShift) && !isCrunch)
             activeMoveSpeed = runSpeed;
-        else
+        else if (!isCrunch)
             activeMoveSpeed = walkSpeed;
+        else
+            activeMoveSpeed = crunchSpeed;
+
+
+        //Crunch
+        if (isGrounded && Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            isCrunch = true;
+            transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            activeMoveSpeed = crunchSpeed;
+        }
+        else if (Input.GetKeyUp(KeyCode.LeftControl))
+        {
+            isCrunch = false;
+            transform.localScale = Vector3.one;
+        }
 
         /*Note
         * vector transform.forward and transform.right have y value is 0, then it will reset movement.y every call
@@ -129,10 +148,12 @@ public class PlayerController : MonoBehaviour
             movement.y = 0;
         }
 
+        //Jump
         if (isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
             movement.y = jumpForce;
         }
+
 
         charCon.Move(movement * Time.fixedDeltaTime);
     }
