@@ -3,7 +3,6 @@
  *
  */
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,7 +15,8 @@ public class PlayerController : MonoBehaviour
     private float verticalRotStore;
     private Vector2 mouseInput;
     private Vector3 moveDir, movement;
-    private float moveSpeed;
+    private float walkSpeed, runSpeed, activeMoveSpeed;
+    public CharacterController charCon;
 
     public bool invertLook;
 
@@ -40,15 +40,8 @@ public class PlayerController : MonoBehaviour
         //Hide Mouse cursor
         Cursor.lockState = CursorLockMode.Locked;
         mouseSensitivity = 8f;
-        moveSpeed = 5f;
-    }
-
-    private void PlayerMovement()
-    {
-        moveDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical"));
-        movement = ((transform.forward * moveDir.z) + (transform.right * moveDir.x)).normalized;
-
-        transform.position += movement * moveSpeed * Time.fixedDeltaTime;
+        walkSpeed = 5f;
+        runSpeed = 8f;
     }
 
     private void PlayerView()
@@ -76,5 +69,18 @@ public class PlayerController : MonoBehaviour
                 Quaternion.Euler(-verticalRotStore, viewPoint.rotation.eulerAngles.y,
                     viewPoint.rotation.eulerAngles.z);
         }
+    }
+
+    private void PlayerMovement()
+    {
+        moveDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical"));
+        movement = ((transform.forward * moveDir.z) + (transform.right * moveDir.x)).normalized;
+
+        if (Input.GetKey(KeyCode.LeftShift))
+            activeMoveSpeed = runSpeed;
+        else
+            activeMoveSpeed = walkSpeed;
+
+        charCon.Move(movement * activeMoveSpeed * Time.fixedDeltaTime);
     }
 }
