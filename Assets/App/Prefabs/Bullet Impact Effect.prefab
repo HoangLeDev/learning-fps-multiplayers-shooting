@@ -4880,7 +4880,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6384382924308920177}
   m_Layer: 0
-  m_Name: Bullet Impact
+  m_Name: Bullet Impact Effect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

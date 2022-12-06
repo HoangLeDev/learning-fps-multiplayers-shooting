@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class PlayerShooting : MonoBehaviour
 {
+    
     public LayerMask shootingMask;
+    public GameObject bulletImpactEffect;
     public void ShootExecute()
     {
         if (Input.GetMouseButtonDown(0))
@@ -24,6 +26,7 @@ public class PlayerShooting : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, shootingMask))
         {
             Debug.Log("We hit " + hit.collider.gameObject.name);
+            Instantiate(bulletImpactEffect, hit.point, Quaternion.LookRotation(hit.normal, Vector3.up));
         }
     }
 }
