@@ -11,8 +11,28 @@ public class PlayerShooting : MonoBehaviour
     public float timeBetweenShot;
     private float shotCounter;
 
+    public float maxHeat = 10f, heatPerShot = 1f, coolRate = 4f, overHeatCoolRate = 5f;
+    private float heatCounter;
+    private bool overHeated;
+
     public void ShootExecute()
     {
+        if (overHeated)
+        {
+            heatCounter -= overHeatCoolRate * Time.deltaTime;
+            if (heatCounter <= 0)
+            {
+                heatCounter = 0;
+                overHeated = false;
+            }
+
+            return;
+        }
+
+        if (heatCounter > 0)
+            heatCounter -= coolRate * Time.deltaTime;
+        else heatCounter = 0;
+
         if (Input.GetMouseButtonDown(0))
         {
             Shoot();
@@ -44,6 +64,14 @@ public class PlayerShooting : MonoBehaviour
             Destroy(bulletImpactEffectInstance, 1f);
         }
 
+        //Reset ShotCounter
         shotCounter = timeBetweenShot;
+
+        heatCounter += heatPerShot;
+        if (heatCounter >= maxHeat)
+        {
+            heatCounter = maxHeat;
+            overHeated = true;
+        }
     }
 }
