@@ -1,8 +1,3 @@
-/*
- *Note:
- *
- */
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,7 +12,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 moveDir, movement;
     private float walkSpeed, runSpeed, crunchSpeed, activeMoveSpeed;
     private float jumpForce, gravityMod;
-
+    
     public bool invertLook;
     private bool isGrounded;
     private bool isCrunch;
