@@ -8,11 +8,24 @@ public class PlayerShooting : MonoBehaviour
     public LayerMask shootingMask;
     public GameObject bulletImpactEffect;
 
+    public float timeBetweenShot;
+    private float shotCounter;
+
     public void ShootExecute()
     {
         if (Input.GetMouseButtonDown(0))
         {
             Shoot();
+        }
+
+        if (Input.GetMouseButton(0))
+        {
+            shotCounter -= Time.deltaTime;
+
+            if (shotCounter <= 0)
+            {
+                Shoot();
+            }
         }
     }
 
@@ -30,5 +43,7 @@ public class PlayerShooting : MonoBehaviour
                 Quaternion.LookRotation(hit.normal, Vector3.up));
             Destroy(bulletImpactEffectInstance, 1f);
         }
+
+        shotCounter = timeBetweenShot;
     }
 }

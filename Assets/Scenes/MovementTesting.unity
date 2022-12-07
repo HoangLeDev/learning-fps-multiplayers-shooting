@@ -1285,6 +1285,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 63
   bulletImpactEffect: {fileID: 6384382924308920176, guid: c127f7f58386c774885f006540dddab0, type: 3}
+  timeBetweenShot: 0.1
 --- !u!1 &1359357397
 GameObject:
   m_ObjectHideFlags: 0

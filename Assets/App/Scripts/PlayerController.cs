@@ -115,7 +115,7 @@ public class PlayerController : MonoBehaviour
 
 
         //Crunch
-        if (isGrounded && Input.GetKeyDown(KeyCode.LeftControl))
+        if (isGrounded && Input.GetKey(KeyCode.LeftControl))
         {
             isCrunch = true;
             transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
