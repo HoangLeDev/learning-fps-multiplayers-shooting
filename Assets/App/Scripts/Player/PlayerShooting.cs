@@ -1,9 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class PlayerShooting : PoolManager
@@ -15,7 +10,7 @@ public class PlayerShooting : PoolManager
     private float shotCounter;
 
     public float maxHeat = 10f, /*heatPerShot = 1f,*/ coolRate = 4f, overHeatCoolRate = 5f;
-    private float heatCounter;
+    public float heatCounter;
     private bool overHeated;
 
     [Header("Recoil")]
@@ -67,15 +62,20 @@ public class PlayerShooting : PoolManager
             UIController.I.overheatedText.gameObject.SetActive(false);
         }
 
+        //Counter between per shot
+        shotCounter -= Time.deltaTime;
+
+        //Mouse Shoot
         if (Input.GetMouseButtonDown(0))
         {
-            Shoot();
+            if (shotCounter <= 0)
+            {
+                Shoot();
+            }
         }
 
         if (Input.GetMouseButton(0) && allGuns[selectedGun].isAutomatic)
         {
-            shotCounter -= Time.deltaTime;
-
             if (shotCounter <= 0)
             {
                 Shoot();
@@ -94,15 +94,13 @@ public class PlayerShooting : PoolManager
 
         if (Physics.Raycast(ray, out RaycastHit hit, shootingMask))
         {
-            Debug.Log("We hit " + hit.collider.gameObject.name);
+            // Debug.Log("We hit " + hit.collider.gameObject.name);
             PoolSpawn(bulletImpactEffect, hit.point + (hit.normal * 0.02f),
                 Quaternion.LookRotation(hit.normal, Vector3.up));
         }
 
         //Reset ShotCounter
         shotCounter = allGuns[selectedGun].timeBetweenShot;
-        Debug.Log(allGuns[selectedGun].timeBetweenShot);
-
         heatCounter += allGuns[selectedGun].heatPerShot;
 
         if (heatCounter >= maxHeat)

@@ -26,7 +26,6 @@ public class PlayerController : MonoBehaviour
 
     private Camera cam;
 
-    
 
     #region Main Function Calls
 
@@ -73,7 +72,7 @@ public class PlayerController : MonoBehaviour
         gravityMod = 2f;
         crunchSpeed = 0.3f;
 
-        ChangeGunModel();
+        StartCoroutine(ChangeGunModel());
     }
 
     private void MovingCamera()
@@ -184,7 +183,7 @@ public class PlayerController : MonoBehaviour
                 playerShootManager.selectedGun = 0;
             }
 
-            ChangeGunModel();
+            StartCoroutine(ChangeGunModel());
         }
         else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
         {
@@ -194,18 +193,21 @@ public class PlayerController : MonoBehaviour
                 playerShootManager.selectedGun = playerShootManager.allGuns.Length - 1;
             }
 
-            ChangeGunModel();
+            StartCoroutine(ChangeGunModel());
         }
     }
 
-    private void ChangeGunModel()
+    private IEnumerator ChangeGunModel()
     {
+        // Debug.Log("Take gun num: " + (playerShootManager.selectedGun + 1));
+        yield return new WaitForSeconds(0.8f);
         foreach (Gun gun in playerShootManager.allGuns)
         {
             gun.gameObject.SetActive(false);
         }
 
         playerShootManager.allGuns[playerShootManager.selectedGun].gameObject.SetActive(true);
+        playerShootManager.heatCounter = 0;
     }
 
     #endregion
