@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class PlayerShooting : PoolManager
@@ -35,6 +37,11 @@ public class PlayerShooting : PoolManager
     [SerializeField] private float snappiness;
     [SerializeField] private float returnSpeed;
 
+    [Header("UI")]
+    //UI
+    public TextMeshProUGUI overheatedText;
+
+    [SerializeField] private Image ammoFillPnl;
 
     public void ShootExecute()
     {
@@ -52,8 +59,13 @@ public class PlayerShooting : PoolManager
 
         if (heatCounter > 0)
             heatCounter -= coolRate * Time.deltaTime;
-        else heatCounter = 0;
+        else
+        {
+            heatCounter = 0;
+            overheatedText.gameObject.SetActive(false);
+        }
 
+        AmmoFill(heatCounter);
         if (Input.GetMouseButtonDown(0))
         {
             Shoot();
@@ -90,8 +102,11 @@ public class PlayerShooting : PoolManager
         shotCounter = timeBetweenShot;
 
         heatCounter += heatPerShot;
+
         if (heatCounter >= maxHeat)
         {
+            AmmoFill(heatCounter);
+            overheatedText.gameObject.SetActive(true);
             heatCounter = maxHeat;
             overHeated = true;
         }
@@ -112,5 +127,10 @@ public class PlayerShooting : PoolManager
         else
             targetRotation += new Vector3(recoilX, Random.Range(-recoilY, recoilY),
                 Random.Range(-recoilZ, recoilZ));
+    }
+
+    private void AmmoFill(float heatAmount)
+    {
+        ammoFillPnl.fillAmount = 1 - heatAmount / maxHeat;
     }
 }
