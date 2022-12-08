@@ -561,6 +561,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 552397224}
+  - component: {fileID: 552397225}
   m_Layer: 6
   m_Name: Gun 2 - Machine Gun
   m_TagString: Untagged
@@ -584,6 +585,21 @@ Transform:
   m_Father: {fileID: 1759229040}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &552397225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 552397223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71e1fc9ff6a28a242bea60dcc4d75ba9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAutomatic: 1
+  timeBetweenShot: 0.1
+  heatPerShot: 1
 --- !u!1 &565639185
 GameObject:
   m_ObjectHideFlags: 0
@@ -1621,6 +1637,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1123652271}
+  - component: {fileID: 1123652272}
   m_Layer: 6
   m_Name: Gun 1 - Pistol
   m_TagString: Untagged
@@ -1644,6 +1661,21 @@ Transform:
   m_Father: {fileID: 1759229040}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1123652272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123652270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71e1fc9ff6a28a242bea60dcc4d75ba9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAutomatic: 0
+  timeBetweenShot: 0.1
+  heatPerShot: 2
 --- !u!1 &1275997116
 GameObject:
   m_ObjectHideFlags: 0
@@ -2654,6 +2686,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2029626628}
+  - component: {fileID: 2029626629}
   m_Layer: 6
   m_Name: Gun 3 - Rifle
   m_TagString: Untagged
@@ -2677,6 +2710,21 @@ Transform:
   m_Father: {fileID: 1759229040}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2029626629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2029626627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71e1fc9ff6a28a242bea60dcc4d75ba9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAutomatic: 1
+  timeBetweenShot: 0.35
+  heatPerShot: 5
 --- !u!1 &2060305673
 GameObject:
   m_ObjectHideFlags: 0
