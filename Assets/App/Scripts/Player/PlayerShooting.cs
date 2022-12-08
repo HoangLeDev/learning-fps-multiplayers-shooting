@@ -37,14 +37,9 @@ public class PlayerShooting : PoolManager
     [SerializeField] private float snappiness;
     [SerializeField] private float returnSpeed;
 
-    [Header("UI")]
-    //UI
-    public TextMeshProUGUI overheatedText;
-
-    [SerializeField] private Image ammoFillPnl;
-
     public void ShootExecute()
     {
+        AmmoFill(heatCounter);
         if (overHeated)
         {
             heatCounter -= overHeatCoolRate * Time.deltaTime;
@@ -62,10 +57,9 @@ public class PlayerShooting : PoolManager
         else
         {
             heatCounter = 0;
-            overheatedText.gameObject.SetActive(false);
+            UIController.I.overheatedText.gameObject.SetActive(false);
         }
 
-        AmmoFill(heatCounter);
         if (Input.GetMouseButtonDown(0))
         {
             Shoot();
@@ -106,7 +100,7 @@ public class PlayerShooting : PoolManager
         if (heatCounter >= maxHeat)
         {
             AmmoFill(heatCounter);
-            overheatedText.gameObject.SetActive(true);
+            UIController.I.overheatedText.gameObject.SetActive(true);
             heatCounter = maxHeat;
             overHeated = true;
         }
@@ -131,6 +125,6 @@ public class PlayerShooting : PoolManager
 
     private void AmmoFill(float heatAmount)
     {
-        ammoFillPnl.fillAmount = 1 - heatAmount / maxHeat;
+        UIController.I.weaponSlider.value = heatAmount / maxHeat;
     }
 }
