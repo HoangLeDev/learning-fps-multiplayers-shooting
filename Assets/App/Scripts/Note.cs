@@ -1,5 +1,5 @@
 /* PlayerShooting.cs:
- * 1. Use SpawnPool asset to Spawn bullet impact for optimize
+ * 1. [Done] Use SpawnPool asset to Spawn bullet impact for optimize
  * 2. Change weapon overheat to out of Ammo
 */
 
