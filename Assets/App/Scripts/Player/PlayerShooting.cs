@@ -13,6 +13,9 @@ public class PlayerShooting : PoolManager
     public float heatCounter;
     private bool overHeated;
 
+    public float muzzleDisplayTime;
+    private float muzzleCounter;
+
     [Header("Recoil")]
     //Recoil
     [SerializeField]
@@ -41,6 +44,16 @@ public class PlayerShooting : PoolManager
 
     public void ShootExecute()
     {
+        if (allGuns[selectedGun].muzzleFlash.activeInHierarchy)
+        {
+            muzzleCounter -= Time.deltaTime;
+            if (muzzleCounter <= 0)
+            {
+                muzzleCounter = 0;
+                allGuns[selectedGun].muzzleFlash.SetActive(false);
+            }
+        }
+
         AmmoFill(heatCounter);
         if (overHeated)
         {
@@ -110,6 +123,9 @@ public class PlayerShooting : PoolManager
             heatCounter = maxHeat;
             overHeated = true;
         }
+
+        allGuns[selectedGun].muzzleFlash.SetActive(true);
+        muzzleCounter = muzzleDisplayTime;
     }
 
     private void RecoilShoot()

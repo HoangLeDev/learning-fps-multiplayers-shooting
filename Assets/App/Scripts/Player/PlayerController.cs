@@ -211,6 +211,7 @@ public class PlayerController : MonoBehaviour
         }
 
         playerShootManager.selectedGun = gunTmpNum;
+        playerShootManager.allGuns[playerShootManager.selectedGun].muzzleFlash.SetActive(false);
         playerShootManager.allGuns[playerShootManager.selectedGun].gameObject.SetActive(true);
         playerShootManager.heatCounter = 0;
     }
