@@ -1291,6 +1291,15 @@ MonoBehaviour:
   heatPerShot: 1
   coolRate: 4
   overHeatCoolRate: 5
+  isAiming: 0
+  recoilX: -2
+  recoilY: 2
+  recoilZ: 0.35
+  aimRecoilX: 0
+  aimRecoilY: 0
+  aimRecoilZ: 0
+  snappiness: 6
+  returnSpeed: 2
 --- !u!1 &1359357397
 GameObject:
   m_ObjectHideFlags: 0
