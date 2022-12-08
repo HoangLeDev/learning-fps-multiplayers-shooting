@@ -11,10 +11,10 @@ public class PlayerShooting : PoolManager
     public LayerMask shootingMask;
     public GameObject bulletImpactEffect;
 
-    public float timeBetweenShot;
+    // public float timeBetweenShot;
     private float shotCounter;
 
-    public float maxHeat = 10f, heatPerShot = 1f, coolRate = 4f, overHeatCoolRate = 5f;
+    public float maxHeat = 10f, /*heatPerShot = 1f,*/ coolRate = 4f, overHeatCoolRate = 5f;
     private float heatCounter;
     private bool overHeated;
 
@@ -37,8 +37,13 @@ public class PlayerShooting : PoolManager
     [SerializeField] private float snappiness;
     [SerializeField] private float returnSpeed;
 
-    
-    
+    [Header("Guns")]
+    //Guns
+    public Gun[] allGuns;
+
+    public int selectedGun;
+
+
     public void ShootExecute()
     {
         AmmoFill(heatCounter);
@@ -67,7 +72,7 @@ public class PlayerShooting : PoolManager
             Shoot();
         }
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && allGuns[selectedGun].isAutomatic)
         {
             shotCounter -= Time.deltaTime;
 
@@ -95,9 +100,10 @@ public class PlayerShooting : PoolManager
         }
 
         //Reset ShotCounter
-        shotCounter = timeBetweenShot;
+        shotCounter = allGuns[selectedGun].timeBetweenShot;
+        Debug.Log(allGuns[selectedGun].timeBetweenShot);
 
-        heatCounter += heatPerShot;
+        heatCounter += allGuns[selectedGun].heatPerShot;
 
         if (heatCounter >= maxHeat)
         {

@@ -26,11 +26,7 @@ public class PlayerController : MonoBehaviour
 
     private Camera cam;
 
-    [Header("Guns")]
-    //Guns
-    public Gun[] allGuns;
-
-    public int selectedGun;
+    
 
     #region Main Function Calls
 
@@ -182,20 +178,20 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetAxisRaw("Mouse ScrollWheel") > 0f)
         {
-            selectedGun++;
-            if (selectedGun >= allGuns.Length)
+            playerShootManager.selectedGun++;
+            if (playerShootManager.selectedGun >= playerShootManager.allGuns.Length)
             {
-                selectedGun = 0;
+                playerShootManager.selectedGun = 0;
             }
 
             ChangeGunModel();
         }
         else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
         {
-            selectedGun--;
-            if (selectedGun <= 0)
+            playerShootManager.selectedGun--;
+            if (playerShootManager.selectedGun <= 0)
             {
-                selectedGun = allGuns.Length - 1;
+                playerShootManager.selectedGun = playerShootManager.allGuns.Length - 1;
             }
 
             ChangeGunModel();
@@ -204,12 +200,12 @@ public class PlayerController : MonoBehaviour
 
     private void ChangeGunModel()
     {
-        foreach (Gun gun in allGuns)
+        foreach (Gun gun in playerShootManager.allGuns)
         {
             gun.gameObject.SetActive(false);
         }
 
-        allGuns[selectedGun].gameObject.SetActive(true);
+        playerShootManager.allGuns[playerShootManager.selectedGun].gameObject.SetActive(true);
     }
 
     #endregion

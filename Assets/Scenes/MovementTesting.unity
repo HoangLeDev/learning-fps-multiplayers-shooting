@@ -1674,7 +1674,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isAutomatic: 0
-  timeBetweenShot: 0.1
+  timeBetweenShot: 0.5
   heatPerShot: 2
 --- !u!1 &1275997116
 GameObject:
@@ -1786,11 +1786,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   playerShootManager: {fileID: 1275997123}
-  allGuns:
-  - {fileID: 1123652272}
-  - {fileID: 552397225}
-  - {fileID: 2029626629}
-  selectedGun: 0
 --- !u!143 &1275997122
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1826,9 +1821,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 63
   bulletImpactEffect: {fileID: 6384382924308920176, guid: c127f7f58386c774885f006540dddab0, type: 3}
-  timeBetweenShot: 0.1
   maxHeat: 10
-  heatPerShot: 1
   coolRate: 4
   overHeatCoolRate: 5
   isAiming: 0
@@ -1840,6 +1833,11 @@ MonoBehaviour:
   aimRecoilZ: 0
   snappiness: 6
   returnSpeed: 2
+  allGuns:
+  - {fileID: 1123652272}
+  - {fileID: 552397225}
+  - {fileID: 2029626629}
+  selectedGun: 0
 --- !u!1 &1351874943
 GameObject:
   m_ObjectHideFlags: 0
@@ -2728,7 +2726,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isAutomatic: 1
-  timeBetweenShot: 0.35
+  timeBetweenShot: 1
   heatPerShot: 5
 --- !u!1 &2060305673
 GameObject:
