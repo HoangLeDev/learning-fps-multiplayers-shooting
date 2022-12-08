@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
     private bool isCrunch;
 
+    private int _selectedGunTmpNum;
+
     public CharacterController charCon;
     public Transform groundCheckPoint;
     public LayerMask groundLayer;
@@ -54,8 +56,6 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-    #region PlayerMovement
-
     private void Initialize()
     {
         //Setup Camera
@@ -71,9 +71,13 @@ public class PlayerController : MonoBehaviour
         jumpForce = 5f;
         gravityMod = 2f;
         crunchSpeed = 0.3f;
+        _selectedGunTmpNum = playerShootManager.selectedGun;
 
-        StartCoroutine(ChangeGunModel());
+        StartCoroutine(ChangeGunModel(_selectedGunTmpNum));
     }
+
+    #region PlayerMovement
+
 
     private void MovingCamera()
     {
@@ -177,27 +181,27 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetAxisRaw("Mouse ScrollWheel") > 0f)
         {
-            playerShootManager.selectedGun++;
-            if (playerShootManager.selectedGun >= playerShootManager.allGuns.Length)
+            _selectedGunTmpNum++;
+            if (_selectedGunTmpNum >= playerShootManager.allGuns.Length)
             {
-                playerShootManager.selectedGun = 0;
+                _selectedGunTmpNum = 0;
             }
 
-            StartCoroutine(ChangeGunModel());
+            StartCoroutine(ChangeGunModel(_selectedGunTmpNum));
         }
         else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
         {
-            playerShootManager.selectedGun--;
-            if (playerShootManager.selectedGun <= 0)
+            _selectedGunTmpNum--;
+            if (_selectedGunTmpNum <= 0)
             {
-                playerShootManager.selectedGun = playerShootManager.allGuns.Length - 1;
+                _selectedGunTmpNum = playerShootManager.allGuns.Length - 1;
             }
 
-            StartCoroutine(ChangeGunModel());
+            StartCoroutine(ChangeGunModel(_selectedGunTmpNum));
         }
     }
 
-    private IEnumerator ChangeGunModel()
+    private IEnumerator ChangeGunModel(int gunTmpNum)
     {
         // Debug.Log("Take gun num: " + (playerShootManager.selectedGun + 1));
         yield return new WaitForSeconds(0.8f);
@@ -206,6 +210,7 @@ public class PlayerController : MonoBehaviour
             gun.gameObject.SetActive(false);
         }
 
+        playerShootManager.selectedGun = gunTmpNum;
         playerShootManager.allGuns[playerShootManager.selectedGun].gameObject.SetActive(true);
         playerShootManager.heatCounter = 0;
     }
