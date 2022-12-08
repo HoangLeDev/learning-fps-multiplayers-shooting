@@ -37,6 +37,8 @@ public class PlayerShooting : PoolManager
     [SerializeField] private float snappiness;
     [SerializeField] private float returnSpeed;
 
+    
+    
     public void ShootExecute()
     {
         AmmoFill(heatCounter);

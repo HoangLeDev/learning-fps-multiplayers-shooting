@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -12,7 +13,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 moveDir, movement;
     private float walkSpeed, runSpeed, crunchSpeed, activeMoveSpeed;
     private float jumpForce, gravityMod;
-    
+
     public bool invertLook;
     private bool isGrounded;
     private bool isCrunch;
@@ -24,6 +25,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerShooting playerShootManager;
 
     private Camera cam;
+
+    [Header("Guns")]
+    //Guns
+    public Gun[] allGuns;
+
+    public int selectedGun;
 
     #region Main Function Calls
 
@@ -41,6 +48,7 @@ public class PlayerController : MonoBehaviour
     {
         PlayerView();
         PlayerMovement();
+        SwitchGun();
         playerShootManager.ShootExecute();
     }
 
@@ -50,6 +58,8 @@ public class PlayerController : MonoBehaviour
     }
 
     #endregion
+
+    #region PlayerMovement
 
     private void Initialize()
     {
@@ -66,6 +76,8 @@ public class PlayerController : MonoBehaviour
         jumpForce = 5f;
         gravityMod = 2f;
         crunchSpeed = 0.3f;
+
+        ChangeGunModel();
     }
 
     private void MovingCamera()
@@ -153,6 +165,7 @@ public class PlayerController : MonoBehaviour
         charCon.Move(movement * Time.fixedDeltaTime);
     }
 
+
     private void PlayerPhysics()
     {
         //Ground check
@@ -160,4 +173,44 @@ public class PlayerController : MonoBehaviour
         //Gravity
         movement.y += Physics.gravity.y * Time.fixedDeltaTime * gravityMod;
     }
+
+    #endregion
+
+    #region Gun
+
+    public void SwitchGun()
+    {
+        if (Input.GetAxisRaw("Mouse ScrollWheel") > 0f)
+        {
+            selectedGun++;
+            if (selectedGun >= allGuns.Length)
+            {
+                selectedGun = 0;
+            }
+
+            ChangeGunModel();
+        }
+        else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
+        {
+            selectedGun--;
+            if (selectedGun <= 0)
+            {
+                selectedGun = allGuns.Length - 1;
+            }
+
+            ChangeGunModel();
+        }
+    }
+
+    private void ChangeGunModel()
+    {
+        foreach (Gun gun in allGuns)
+        {
+            gun.gameObject.SetActive(false);
+        }
+
+        allGuns[selectedGun].gameObject.SetActive(true);
+    }
+
+    #endregion
 }
