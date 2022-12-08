@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class PlayerShooting : PoolManager
 {
@@ -15,26 +14,6 @@ public class PlayerShooting : PoolManager
     public float maxHeat = 10f, heatPerShot = 1f, coolRate = 4f, overHeatCoolRate = 5f;
     private float heatCounter;
     private bool overHeated;
-
-    [Header("Recoil")]
-    //Recoil
-    [SerializeField]
-    private bool isAiming;
-
-    private Vector3 currentRotation;
-    private Vector3 targetRotation;
-
-    [SerializeField] private float recoilX;
-    [SerializeField] private float recoilY;
-    [SerializeField] private float recoilZ;
-
-    [SerializeField] private float aimRecoilX;
-    [SerializeField] private float aimRecoilY;
-    [SerializeField] private float aimRecoilZ;
-
-    [SerializeField] private float snappiness;
-    [SerializeField] private float returnSpeed;
-
 
     public void ShootExecute()
     {
@@ -76,8 +55,6 @@ public class PlayerShooting : PoolManager
         //half x, half y, zero z (Middle of Camera)
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
         ray.origin = cam.transform.position;
-        SetTargetRecoil();
-        RecoilShoot();
 
         if (Physics.Raycast(ray, out RaycastHit hit, shootingMask))
         {
@@ -95,22 +72,5 @@ public class PlayerShooting : PoolManager
             heatCounter = maxHeat;
             overHeated = true;
         }
-    }
-
-    private void RecoilShoot()
-    {
-        // targetRotation = Vector3.Lerp(targetRotation, Vector3.up, returnSpeed * Time.deltaTime);
-        // currentRotation = Vector3.Slerp(currentRotation, targetRotation, snappiness * Time.deltaTime);
-        // transform.localRotation = Quaternion.Euler(currentRotation);
-    }
-
-    private void SetTargetRecoil()
-    {
-        if (isAiming)
-            targetRotation += new Vector3(aimRecoilX, Random.Range(-aimRecoilY, aimRecoilY),
-                Random.Range(-aimRecoilZ, aimRecoilZ));
-        else
-            targetRotation += new Vector3(recoilX, Random.Range(-recoilY, recoilY),
-                Random.Range(-recoilZ, recoilZ));
     }
 }
