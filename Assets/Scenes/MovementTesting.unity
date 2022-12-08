@@ -681,7 +681,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &778913008
 GameObject:
@@ -817,7 +817,7 @@ Transform:
   - {fileID: 1629613661}
   - {fileID: 422689175}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &891552042
 GameObject:
@@ -849,7 +849,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &891552044
 MonoBehaviour:
@@ -1228,7 +1228,7 @@ Transform:
   - {fileID: 691684379}
   - {fileID: 1377234547}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1275997121
 MonoBehaviour:
@@ -1281,11 +1281,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb6d706e1e0c76d4e8f187f049f60baa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  poolObject: {fileID: 6384382924308920176, guid: c127f7f58386c774885f006540dddab0, type: 3}
   shootingMask:
     serializedVersion: 2
     m_Bits: 63
   bulletImpactEffect: {fileID: 6384382924308920176, guid: c127f7f58386c774885f006540dddab0, type: 3}
   timeBetweenShot: 0.1
+  maxHeat: 10
+  heatPerShot: 1
+  coolRate: 4
+  overHeatCoolRate: 5
 --- !u!1 &1359357397
 GameObject:
   m_ObjectHideFlags: 0
@@ -1508,7 +1513,7 @@ RectTransform:
   m_Children:
   - {fileID: 230051598}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1806,4 +1811,35 @@ Transform:
   m_Children: []
   m_Father: {fileID: 791127012}
   m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2138142750
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2138142751}
+  m_Layer: 0
+  m_Name: PoolManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2138142751
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2138142750}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 13.35633, y: -20.82349, z: 37.46216}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

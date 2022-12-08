@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerShooting : MonoBehaviour
+public class PlayerShooting : PoolManager
 {
     public LayerMask shootingMask;
     public GameObject bulletImpactEffect;
@@ -59,9 +59,8 @@ public class PlayerShooting : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, shootingMask))
         {
             Debug.Log("We hit " + hit.collider.gameObject.name);
-            var bulletImpactEffectInstance = Instantiate(bulletImpactEffect, hit.point + (hit.normal * 0.02f),
+            PoolSpawn(bulletImpactEffect, hit.point + (hit.normal * 0.02f),
                 Quaternion.LookRotation(hit.normal, Vector3.up));
-            Destroy(bulletImpactEffectInstance, 1f);
         }
 
         //Reset ShotCounter
