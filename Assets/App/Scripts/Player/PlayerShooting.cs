@@ -16,6 +16,8 @@ public class PlayerShooting : PoolManager
     public float muzzleDisplayTime;
     private float muzzleCounter;
 
+    [SerializeField] private LineRenderer bulletLine;
+
     [Header("Recoil")]
     //Recoil
     [SerializeField]
@@ -50,6 +52,7 @@ public class PlayerShooting : PoolManager
             if (muzzleCounter <= 0)
             {
                 muzzleCounter = 0;
+                bulletLine.gameObject.SetActive(false);
                 allGuns[selectedGun].muzzleFlash.SetActive(false);
             }
         }
@@ -125,6 +128,11 @@ public class PlayerShooting : PoolManager
         }
 
         allGuns[selectedGun].muzzleFlash.SetActive(true);
+        
+        //Effect
+        bulletLine.gameObject.SetActive(true);
+        bulletLine.SetPosition(0, allGuns[selectedGun].muzzleFlash.transform.position);
+        bulletLine.SetPosition(1, hit.point);
         muzzleCounter = muzzleDisplayTime;
     }
 
