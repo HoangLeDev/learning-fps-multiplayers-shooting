@@ -77,7 +77,7 @@ public class PlayerController : MonoBehaviour
 
     private void InitPlayerSpawnPosition()
     {
-        Transform newTrans = SpawnManager.instance.GetSpawnPosition();
+        Transform newTrans = SpawnManager.I.GetSpawnPosition();
         transform.position = newTrans.position;
         transform.rotation = newTrans.rotation;
     }
