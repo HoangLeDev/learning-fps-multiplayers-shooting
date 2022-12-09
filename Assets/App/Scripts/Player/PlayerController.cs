@@ -83,11 +83,9 @@ public class PlayerController : MonoBehaviour
         Transform newTrans = SpawnManager.instance.GetSpawnPosition();
         transform.position = newTrans.position;
         transform.rotation = newTrans.rotation;
-
     }
 
     #region PlayerMovement
-
 
     private void MovingCamera()
     {
@@ -189,25 +187,39 @@ public class PlayerController : MonoBehaviour
 
     public void SwitchGun()
     {
-        if (Input.GetAxisRaw("Mouse ScrollWheel") > 0f)
-        {
-            _selectedGunTmpNum++;
-            if (_selectedGunTmpNum >= playerShootManager.allGuns.Length)
-            {
-                _selectedGunTmpNum = 0;
-            }
+        // //Switch Gun By ScrollWheel
+        // if (Input.GetAxisRaw("Mouse ScrollWheel") > 0f)
+        // {
+        //     _selectedGunTmpNum++;
+        //     if (_selectedGunTmpNum >= playerShootManager.allGuns.Length)
+        //     {
+        //         _selectedGunTmpNum = 0;
+        //     }
+        //
+        //     StartCoroutine(ChangeGunModel(_selectedGunTmpNum));
+        // }
+        // else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
+        // {
+        //     _selectedGunTmpNum--;
+        //     if (_selectedGunTmpNum <= 0)
+        //     {
+        //         _selectedGunTmpNum = playerShootManager.allGuns.Length - 1;
+        //     }
+        //
+        //     StartCoroutine(ChangeGunModel(_selectedGunTmpNum));
+        // }
 
-            StartCoroutine(ChangeGunModel(_selectedGunTmpNum));
-        }
-        else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
+        //Switch Gun By Number
+        for (int i = 0; i < playerShootManager.allGuns.Length; i++)
         {
-            _selectedGunTmpNum--;
-            if (_selectedGunTmpNum <= 0)
+            int weaponNum = i + 1;
+            if (Input.GetKeyDown(weaponNum.ToString()))
             {
-                _selectedGunTmpNum = playerShootManager.allGuns.Length - 1;
+                if (i == _selectedGunTmpNum) return;
+                _selectedGunTmpNum = i;
+                StartCoroutine(ChangeGunModel(_selectedGunTmpNum));
+                break;
             }
-
-            StartCoroutine(ChangeGunModel(_selectedGunTmpNum));
         }
     }
 
