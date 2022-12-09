@@ -11,5 +11,7 @@
 /*Launcher.cs
  * 1. Script is now Init by Start(), need to create a InitLauncher() method and call in GameManager
  * => Make GameManager to be DontDestroyOnLoad by Create InitScene => Call All Init Controllers in this class
+ *
+ * 2. Create Constant script to store quote, notification, message as String Constant 
  */
 

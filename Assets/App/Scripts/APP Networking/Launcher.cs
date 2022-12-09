@@ -13,6 +13,8 @@ public class Launcher : SingletonNetworking<Launcher>
     public void Start()
     {
         CloseMenu();
+        loadingScreen.SetActive(true);
+        loadingTMP.text = ConstantHolder.MESSAGE_CONNECT_TO_SERVER + "...";
     }
     
     private void CloseMenu()
