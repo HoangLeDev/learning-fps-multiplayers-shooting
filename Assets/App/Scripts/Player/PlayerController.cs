@@ -60,10 +60,7 @@ public class PlayerController : MonoBehaviour
     {
         //Setup Camera
         cam = Camera.main;
-
-        //Hide Mouse cursor while playing
-        Cursor.lockState = CursorLockMode.Locked;
-
+        
         //Setup Player Properties
         mouseSensitivity = 5f;
         walkSpeed = 1f;

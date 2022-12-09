@@ -12,6 +12,9 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        //Hide Mouse cursor while playing
+        Cursor.lockState = CursorLockMode.Locked;
+
         SpawnManager.I.InitSpawnManager();
     }
 
