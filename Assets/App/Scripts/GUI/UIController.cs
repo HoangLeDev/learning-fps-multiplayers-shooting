@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class UIController : MonoBehaviour
+public class UIController : Singleton<UIController>
 {
     public static UIController I;
     public Slider weaponSlider;

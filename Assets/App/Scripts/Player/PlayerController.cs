@@ -73,7 +73,17 @@ public class PlayerController : MonoBehaviour
         crunchSpeed = 0.3f;
         _selectedGunTmpNum = playerShootManager.selectedGun;
 
+        InitPlayerSpawnPosition();
+
         StartCoroutine(ChangeGunModel(_selectedGunTmpNum));
+    }
+
+    private void InitPlayerSpawnPosition()
+    {
+        Transform newTrans = SpawnManager.instance.GetSpawnPosition();
+        transform.position = newTrans.position;
+        transform.rotation = newTrans.rotation;
+
     }
 
     #region PlayerMovement

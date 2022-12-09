@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,11 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         AdditionGameInputSetting();
+    }
+
+    private void Start()
+    {
+        SpawnManager.I.InitSpawnManager();
     }
 
     private void AdditionGameInputSetting()
