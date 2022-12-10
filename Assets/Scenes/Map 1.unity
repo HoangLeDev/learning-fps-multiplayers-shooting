@@ -2650,6 +2650,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   playerShootManager: {fileID: 1275997123}
+  crosshair: {fileID: 230051597}
 --- !u!143 &1275997122
 CharacterController:
   m_ObjectHideFlags: 0
@@ -3166,6 +3167,11 @@ MonoBehaviour:
   - {fileID: 1169836700}
   - {fileID: 2051120994}
   - {fileID: 2103388245}
+--- !u!1 &1402056325 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4194096245695649080, guid: 6abca9446f6b86e4388115cf2c05190f, type: 3}
+  m_PrefabInstance: {fileID: 669807416}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1422520003
 GameObject:
   m_ObjectHideFlags: 0
@@ -4467,7 +4473,7 @@ MonoBehaviour:
   isAutomatic: 1
   timeBetweenShot: 0.8
   heatPerShot: 7
-  muzzleFlash: {fileID: 0}
+  muzzleFlash: {fileID: 1402056325}
 --- !u!1 &2045543416
 GameObject:
   m_ObjectHideFlags: 0

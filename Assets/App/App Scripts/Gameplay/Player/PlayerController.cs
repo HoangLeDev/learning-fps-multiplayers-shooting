@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     public LayerMask groundLayer;
 
     [SerializeField] private PlayerShooting playerShootManager;
+    [SerializeField] private GameObject crosshair;
 
     private Camera cam;
 
@@ -205,6 +206,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(weaponNum.ToString()))
             {
                 if (i == _selectedGunTmpNum) return;
+                CrosshairHandler(weaponNum);
                 _selectedGunTmpNum = i;
                 StartCoroutine(ChangeGunModel(_selectedGunTmpNum));
                 break;
@@ -236,6 +238,13 @@ public class PlayerController : MonoBehaviour
         Transform newTrans = SpawnManager.I.GetSpawnPosition();
         transform.position = newTrans.position;
         transform.rotation = newTrans.rotation;
+    }
+
+    private void CrosshairHandler(int selectedNum)
+    {
+        if (selectedNum == 3)
+            crosshair.SetActive(false);
+        else crosshair.SetActive(true);
     }
 
     #endregion
