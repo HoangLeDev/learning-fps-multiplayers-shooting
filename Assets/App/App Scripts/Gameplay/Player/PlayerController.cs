@@ -28,6 +28,24 @@ public class PlayerController : MonoBehaviour
 
     private Camera cam;
 
+    private void Initialize()
+    {
+        //Setup Camera
+        cam = Camera.main;
+
+        //Setup Player Properties
+        mouseSensitivity = 5f;
+        walkSpeed = 1f;
+        runSpeed = 1.5f;
+        jumpForce = 5f;
+        gravityMod = 2f;
+        crunchSpeed = 0.3f;
+        _selectedGunTmpNum = playerShootManager.selectedGun;
+
+        InitPlayerSpawnPosition();
+
+        StartCoroutine(ChangeGunModel(_selectedGunTmpNum));
+    }
 
     #region Main Function Calls
 
@@ -55,32 +73,6 @@ public class PlayerController : MonoBehaviour
     }
 
     #endregion
-
-    private void Initialize()
-    {
-        //Setup Camera
-        cam = Camera.main;
-        
-        //Setup Player Properties
-        mouseSensitivity = 5f;
-        walkSpeed = 1f;
-        runSpeed = 1.5f;
-        jumpForce = 5f;
-        gravityMod = 2f;
-        crunchSpeed = 0.3f;
-        _selectedGunTmpNum = playerShootManager.selectedGun;
-
-        InitPlayerSpawnPosition();
-
-        StartCoroutine(ChangeGunModel(_selectedGunTmpNum));
-    }
-
-    private void InitPlayerSpawnPosition()
-    {
-        Transform newTrans = SpawnManager.I.GetSpawnPosition();
-        transform.position = newTrans.position;
-        transform.rotation = newTrans.rotation;
-    }
 
     #region PlayerMovement
 
@@ -233,6 +225,17 @@ public class PlayerController : MonoBehaviour
         playerShootManager.allGuns[playerShootManager.selectedGun].muzzleFlash.SetActive(false);
         playerShootManager.allGuns[playerShootManager.selectedGun].gameObject.SetActive(true);
         playerShootManager.heatCounter = 0;
+    }
+
+    #endregion
+
+    #region Others
+
+    private void InitPlayerSpawnPosition()
+    {
+        Transform newTrans = SpawnManager.I.GetSpawnPosition();
+        transform.position = newTrans.position;
+        transform.rotation = newTrans.rotation;
     }
 
     #endregion

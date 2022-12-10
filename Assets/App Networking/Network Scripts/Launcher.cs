@@ -14,9 +14,11 @@ public class Launcher : SingletonNetworking<Launcher>
 
     public GameObject createRoomScreen;
     public TMP_InputField roomNameInput;
-    
+
     public TMP_Text loadingTMP;
     public GameObject demoGun;
+
+    #region Main Function Calls
 
     public void Start()
     {
@@ -26,6 +28,10 @@ public class Launcher : SingletonNetworking<Launcher>
 
         PhotonNetwork.ConnectUsingSettings();
     }
+
+    #endregion
+
+    #region Photon PUN Functions
 
     public override void OnConnectedToMaster()
     {
@@ -38,6 +44,10 @@ public class Launcher : SingletonNetworking<Launcher>
         CloseMenu();
         menuBtns.SetActive(true);
     }
+
+    #endregion
+
+    #region UI Controlling
 
     public void OpenRoomCreateChoice()
     {
@@ -52,18 +62,24 @@ public class Launcher : SingletonNetworking<Launcher>
         createRoomScreen.SetActive(false);
     }
 
+    #endregion
+
+    #region Methods
+
     public void StartCreateRoom()
     {
         if (!string.IsNullOrEmpty(roomNameInput.text))
         {
             RoomOptions options = new RoomOptions();
             options.MaxPlayers = 8;
-            
+
             PhotonNetwork.CreateRoom(roomNameInput.text, options);
-            
+
             CloseMenu();
             loadingTMP.text = ConstantHolder.MESSAGE_CREATING_ROOM;
             loadingScreen.SetActive(true);
         }
     }
+
+    #endregion
 }
