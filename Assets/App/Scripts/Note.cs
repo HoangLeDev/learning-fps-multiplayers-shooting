@@ -1,6 +1,7 @@
 /* PlayerShooting.cs:
  * 1. [Done] Use SpawnPool asset to Spawn bullet impact for optimize
  * 2. Change weapon overheat to out of Ammo
+ * 3. Write common script for Effect Counter
 */
 
 /* PlayerController.cs:

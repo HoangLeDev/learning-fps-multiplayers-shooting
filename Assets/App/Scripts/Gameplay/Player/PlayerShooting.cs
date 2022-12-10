@@ -13,8 +13,11 @@ public class PlayerShooting : PoolManager
     public float heatCounter;
     private bool overHeated;
 
+    //Effect Counter
     public float muzzleDisplayTime;
     private float muzzleCounter;
+    public float bulletDisplayTime;
+    private float bulletCounter;
 
     [SerializeField] private LineRenderer bulletLine;
 
@@ -52,8 +55,17 @@ public class PlayerShooting : PoolManager
             if (muzzleCounter <= 0)
             {
                 muzzleCounter = 0;
-                bulletLine.gameObject.SetActive(false);
                 allGuns[selectedGun].muzzleFlash.SetActive(false);
+            }
+        }
+
+        if (bulletLine.gameObject.activeInHierarchy)
+        {
+            bulletCounter -= Time.deltaTime;
+            if (bulletCounter <= 0)
+            {
+                bulletCounter = 0;
+                bulletLine.gameObject.SetActive(false);
             }
         }
 
@@ -108,12 +120,22 @@ public class PlayerShooting : PoolManager
         SetTargetRecoil();
         RecoilShoot();
 
+        
+        Vector3 hitPoint = Vector3.zero; // Cover when player shoot to the Sky
+        
         if (Physics.Raycast(ray, out RaycastHit hit, shootingMask))
         {
+            hitPoint = hit.point;
             // Debug.Log("We hit " + hit.collider.gameObject.name);
             PoolSpawn(bulletImpactEffect, hit.point + (hit.normal * 0.02f),
                 Quaternion.LookRotation(hit.normal, Vector3.up));
         }
+        else
+        {
+            // Cover when player shoot to the Sky
+            hitPoint = cam.transform.position + (cam.transform.forward * 30f);
+        }
+
 
         //Reset ShotCounter
         shotCounter = allGuns[selectedGun].timeBetweenShot;
@@ -132,8 +154,9 @@ public class PlayerShooting : PoolManager
         //Effect
         bulletLine.gameObject.SetActive(true);
         bulletLine.SetPosition(0, allGuns[selectedGun].muzzleFlash.transform.position);
-        bulletLine.SetPosition(1, hit.point);
+        bulletLine.SetPosition(1, hitPoint);
         muzzleCounter = muzzleDisplayTime;
+        bulletCounter = bulletDisplayTime;
     }
 
     private void RecoilShoot()
