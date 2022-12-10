@@ -9,14 +9,23 @@ using WebSocketSharp;
 
 public class Launcher : SingletonNetworking<Launcher>
 {
-    public GameObject loadingScreen;
     public GameObject menuBtns;
+
+    [Header("Screen Fields")]
+    //Screen Fields
+    public GameObject loadingScreen;
+
+    public TMP_Text loadingTMP;
 
     public GameObject createRoomScreen;
     public TMP_InputField roomNameInput;
 
-    public TMP_Text loadingTMP;
-    public GameObject demoGun;
+    public GameObject roomScreen;
+    public TMP_Text roomNameTMP;
+
+    public GameObject errorScreen;
+    public TMP_Text errorTMP;
+
 
     #region Main Function Calls
 
@@ -45,11 +54,32 @@ public class Launcher : SingletonNetworking<Launcher>
         menuBtns.SetActive(true);
     }
 
+    public override void OnJoinedRoom()
+    {
+        CloseMenu();
+        roomScreen.SetActive(true);
+
+        roomNameTMP.text = PhotonNetwork.CurrentRoom.Name;
+    }
+
+    public override void OnCreateRoomFailed(short returnCode, string message)
+    {
+        errorTMP.text = $"{returnCode}: {ConstantHolder.MESSAGE_CREATE_ROOM_FAILED} {message}";
+        CloseMenu();
+        errorScreen.SetActive(true);
+    }
+
+    public override void OnLeftRoom()
+    {
+        CloseMenu();
+        menuBtns.SetActive(true);
+    }
+
     #endregion
 
     #region UI Controlling
 
-    public void OpenRoomCreateChoice()
+    public void OpenRoomCreateChoiceBtn()
     {
         CloseMenu();
         createRoomScreen.SetActive(true);
@@ -60,6 +90,22 @@ public class Launcher : SingletonNetworking<Launcher>
         loadingScreen.SetActive(false);
         menuBtns.SetActive(false);
         createRoomScreen.SetActive(false);
+        roomScreen.SetActive(false);
+        errorScreen.SetActive(false);
+    }
+
+    public void OnCloseErrorScreenBtn()
+    {
+        CloseMenu();
+        menuBtns.SetActive(true);
+    }
+
+    public void OnLeaveRoomBtn()
+    {
+        PhotonNetwork.LeaveRoom();
+        CloseMenu();
+        loadingTMP.text = ConstantHolder.MESSAGE_LEAVING_ROOM;
+        loadingScreen.SetActive(true);
     }
 
     #endregion
