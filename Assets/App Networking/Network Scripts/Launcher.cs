@@ -20,6 +20,6 @@ public class Launcher : SingletonNetworking<Launcher>
     private void CloseMenu()
     {
         loadingScreen.SetActive(false);
-        menuBtns.SetActive(false);
+        menuBtns.SetActive( false);
     }
 }

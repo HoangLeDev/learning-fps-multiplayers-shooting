@@ -120,9 +120,9 @@ public class PlayerShooting : PoolManager
         SetTargetRecoil();
         RecoilShoot();
 
-        
+
         Vector3 hitPoint = Vector3.zero; // Cover when player shoot to the Sky
-        
+
         if (Physics.Raycast(ray, out RaycastHit hit, shootingMask))
         {
             hitPoint = hit.point;
@@ -132,6 +132,13 @@ public class PlayerShooting : PoolManager
         }
         else
         {
+            /*
+             * Note:
+             * 1. transform.forward always return a const of the normalized vector3 to the z from
+             * the 1st place of OBJ in World space, it will never change.
+             * 2. To take the realtime transform.forward, need to add the OBJ.transform.position
+             */
+            
             // Cover when player shoot to the Sky
             hitPoint = cam.transform.position + (cam.transform.forward * 30f);
         }
@@ -150,7 +157,7 @@ public class PlayerShooting : PoolManager
         }
 
         allGuns[selectedGun].muzzleFlash.SetActive(true);
-        
+
         //Effect
         bulletLine.gameObject.SetActive(true);
         bulletLine.SetPosition(0, allGuns[selectedGun].muzzleFlash.transform.position);
