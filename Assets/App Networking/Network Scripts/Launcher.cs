@@ -26,12 +26,15 @@ public class Launcher : SingletonNetworking<Launcher>
     public GameObject errorScreen;
     public TMP_Text errorTMP;
 
+    public GameObject roomBrowseScreen;
+    public RoomButton roomButtonItem;
+    private List<RoomButton> allRoomButtons = new List<RoomButton>();
 
     #region Main Function Calls
 
     public void Start()
     {
-        CloseMenu();
+        CloseAllPanels();
         loadingScreen.SetActive(true);
         loadingTMP.text = ConstantHolder.MESSAGE_CONNECT_TO_SERVER;
 
@@ -50,13 +53,12 @@ public class Launcher : SingletonNetworking<Launcher>
 
     public override void OnJoinedLobby()
     {
-        CloseMenu();
-        menuBtns.SetActive(true);
+        OnBackToMainMenuBtn();
     }
 
     public override void OnJoinedRoom()
     {
-        CloseMenu();
+        CloseAllPanels();
         roomScreen.SetActive(true);
 
         roomNameTMP.text = PhotonNetwork.CurrentRoom.Name;
@@ -65,14 +67,13 @@ public class Launcher : SingletonNetworking<Launcher>
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
         errorTMP.text = $"{returnCode}: {ConstantHolder.MESSAGE_CREATE_ROOM_FAILED} {message}";
-        CloseMenu();
+        CloseAllPanels();
         errorScreen.SetActive(true);
     }
 
     public override void OnLeftRoom()
     {
-        CloseMenu();
-        menuBtns.SetActive(true);
+        OnBackToMainMenuBtn();
     }
 
     #endregion
@@ -81,31 +82,47 @@ public class Launcher : SingletonNetworking<Launcher>
 
     public void OpenRoomCreateChoiceBtn()
     {
-        CloseMenu();
+        CloseAllPanels();
         createRoomScreen.SetActive(true);
     }
 
-    private void CloseMenu()
+    private void CloseAllPanels()
     {
         loadingScreen.SetActive(false);
         menuBtns.SetActive(false);
         createRoomScreen.SetActive(false);
         roomScreen.SetActive(false);
         errorScreen.SetActive(false);
-    }
-
-    public void OnCloseErrorScreenBtn()
-    {
-        CloseMenu();
-        menuBtns.SetActive(true);
+        roomBrowseScreen.SetActive(false);
     }
 
     public void OnLeaveRoomBtn()
     {
         PhotonNetwork.LeaveRoom();
-        CloseMenu();
+        CloseAllPanels();
         loadingTMP.text = ConstantHolder.MESSAGE_LEAVING_ROOM;
         loadingScreen.SetActive(true);
+    }
+
+    public void OnOpenRoomBrowserBtn()
+    {
+        CloseAllPanels();
+        roomBrowseScreen.SetActive(true);
+    }
+
+    public void OnBackToMainMenuBtn()
+    {
+        CloseAllPanels();
+        menuBtns.SetActive(true);
+    }
+
+    public void OnQuitGameBtn()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.ExitPlaymode();
+#else
+        Application.Quit();
+#endif
     }
 
     #endregion
@@ -121,7 +138,7 @@ public class Launcher : SingletonNetworking<Launcher>
 
             PhotonNetwork.CreateRoom(roomNameInput.text, options);
 
-            CloseMenu();
+            CloseAllPanels();
             loadingTMP.text = ConstantHolder.MESSAGE_CREATING_ROOM;
             loadingScreen.SetActive(true);
         }
