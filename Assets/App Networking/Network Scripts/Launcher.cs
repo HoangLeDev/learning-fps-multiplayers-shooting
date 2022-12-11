@@ -5,7 +5,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
-using WebSocketSharp;
+using Unity.VisualScripting;
 
 public class Launcher : SingletonNetworking<Launcher>
 {
@@ -27,8 +27,9 @@ public class Launcher : SingletonNetworking<Launcher>
     public TMP_Text errorTMP;
 
     public GameObject roomBrowseScreen;
+    public Transform roomButtonContainer;
     public RoomButton roomButtonItem;
-    private List<RoomButton> allRoomButtons = new List<RoomButton>();
+    public List<RoomButton> allRoomButtons = new List<RoomButton>();
 
     #region Main Function Calls
 
@@ -76,6 +77,30 @@ public class Launcher : SingletonNetworking<Launcher>
         OnBackToMainMenuBtn();
     }
 
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    {
+        foreach (RoomButton rb in allRoomButtons)
+        {
+            Destroy(rb.gameObject);
+        }
+
+        allRoomButtons.Clear();
+
+        roomButtonItem.gameObject.SetActive(false);
+
+        for (int i = 0; i < roomList.Count; i++)
+        {
+            if (roomList[i].PlayerCount != roomList[i].MaxPlayers && !roomList[i].RemovedFromList)
+            {
+                RoomButton newButton = Instantiate(roomButtonItem, roomButtonContainer);
+                newButton.SetButtonDetails(roomList[i]);
+                newButton.gameObject.SetActive(true);
+
+                allRoomButtons.Add(newButton);
+            }
+        }
+    }
+
     #endregion
 
     #region UI Controlling
@@ -114,6 +139,15 @@ public class Launcher : SingletonNetworking<Launcher>
     {
         CloseAllPanels();
         menuBtns.SetActive(true);
+    }
+
+    public void OnJoinRoomAfterClickBtn(RoomInfo inputInfo)
+    {
+        PhotonNetwork.JoinRoom(inputInfo.Name);
+        
+        CloseAllPanels();
+        loadingTMP.text = ConstantHolder.MESSAGE_JOIN_ROOM;
+        loadingScreen.SetActive(true);
     }
 
     public void OnQuitGameBtn()

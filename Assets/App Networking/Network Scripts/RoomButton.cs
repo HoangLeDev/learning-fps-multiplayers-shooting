@@ -9,18 +9,18 @@ public class RoomButton : MonoBehaviour
 {
     public TMP_Text buttonTMP;
     private RoomInfo info;
+    private string roomName;
 
     public void SetButtonDetails(RoomInfo inputInfo)
     {
         info = inputInfo;
-        buttonTMP.text = info.Name;
-    }
-    private void Start()
-    {
-        
+        roomName = info.Name;
+        buttonTMP.text = roomName;
+        transform.name = "Room: " + roomName;
     }
 
-    private void Update()
+    public void OnOpenRoom()
     {
+        Launcher.I.OnJoinRoomAfterClickBtn(info);
     }
 }
