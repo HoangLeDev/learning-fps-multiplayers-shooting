@@ -15,7 +15,7 @@
  *
  * 2. [Done] Create Constant script to store quote, notification, message as String Constant
  * 
- * 3. <Optional/Unnecessary> Launcher script is currently a lot of SetActive Panel (true/false)
+ * 3. <Optional/Unnecessary> Launcher script is currently a lot of SetActive Panel (true/false) <Write in GamePanel.cs>
  * => Create a Panel System to handle all main panel in an Array
  */
 
