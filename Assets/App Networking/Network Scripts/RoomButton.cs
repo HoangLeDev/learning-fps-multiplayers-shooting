@@ -9,7 +9,7 @@ public class RoomButton : MonoBehaviour
 {
     public TMP_Text buttonTMP;
     private RoomInfo info;
-    private string roomName;
+    public string roomName;
 
     public void SetButtonDetails(RoomInfo inputInfo)
     {
@@ -21,6 +21,6 @@ public class RoomButton : MonoBehaviour
 
     public void OnOpenRoom()
     {
-        Launcher.I.OnJoinRoomAfterClickBtn(info);
+        Launcher.I.OnJoinRoomAfterBrowseBtn(info);
     }
 }

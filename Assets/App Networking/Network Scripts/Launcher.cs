@@ -29,7 +29,9 @@ public class Launcher : SingletonNetworking<Launcher>
     public GameObject roomBrowseScreen;
     public Transform roomButtonContainer;
     public RoomButton roomButtonItem;
-    public List<RoomButton> allRoomButtons = new List<RoomButton>();
+    public List<RoomButton> allRoomButtonsList = new List<RoomButton>();
+    public List<RoomInfo> clientAvailableRoomList = new List<RoomInfo>();
+    public List<RoomInfo> clientUnavailableRoomList = new List<RoomInfo>();
 
     #region Main Function Calls
 
@@ -44,7 +46,8 @@ public class Launcher : SingletonNetworking<Launcher>
 
     #endregion
 
-    #region Photon PUN Functions
+
+    #region LOBBY
 
     public override void OnConnectedToMaster()
     {
@@ -57,111 +60,16 @@ public class Launcher : SingletonNetworking<Launcher>
         OnBackToMainMenuBtn();
     }
 
-    public override void OnJoinedRoom()
-    {
-        CloseAllPanels();
-        roomScreen.SetActive(true);
-
-        roomNameTMP.text = PhotonNetwork.CurrentRoom.Name;
-    }
-
-    public override void OnCreateRoomFailed(short returnCode, string message)
-    {
-        errorTMP.text = $"{returnCode}: {ConstantHolder.MESSAGE_CREATE_ROOM_FAILED} {message}";
-        CloseAllPanels();
-        errorScreen.SetActive(true);
-    }
-
-    public override void OnLeftRoom()
-    {
-        OnBackToMainMenuBtn();
-    }
-
-    public override void OnRoomListUpdate(List<RoomInfo> roomList)
-    {
-        foreach (RoomButton rb in allRoomButtons)
-        {
-            Destroy(rb.gameObject);
-        }
-
-        allRoomButtons.Clear();
-
-        roomButtonItem.gameObject.SetActive(false);
-
-        for (int i = 0; i < roomList.Count; i++)
-        {
-            if (roomList[i].PlayerCount != roomList[i].MaxPlayers && !roomList[i].RemovedFromList)
-            {
-                RoomButton newButton = Instantiate(roomButtonItem, roomButtonContainer);
-                newButton.SetButtonDetails(roomList[i]);
-                newButton.gameObject.SetActive(true);
-
-                allRoomButtons.Add(newButton);
-            }
-        }
-    }
-
     #endregion
 
-    #region UI Controlling
+
+    #region CREATE_ROOM
 
     public void OpenRoomCreateChoiceBtn()
     {
         CloseAllPanels();
         createRoomScreen.SetActive(true);
     }
-
-    private void CloseAllPanels()
-    {
-        loadingScreen.SetActive(false);
-        menuBtns.SetActive(false);
-        createRoomScreen.SetActive(false);
-        roomScreen.SetActive(false);
-        errorScreen.SetActive(false);
-        roomBrowseScreen.SetActive(false);
-    }
-
-    public void OnLeaveRoomBtn()
-    {
-        PhotonNetwork.LeaveRoom();
-        CloseAllPanels();
-        loadingTMP.text = ConstantHolder.MESSAGE_LEAVING_ROOM;
-        loadingScreen.SetActive(true);
-    }
-
-    public void OnOpenRoomBrowserBtn()
-    {
-        CloseAllPanels();
-        roomBrowseScreen.SetActive(true);
-    }
-
-    public void OnBackToMainMenuBtn()
-    {
-        CloseAllPanels();
-        menuBtns.SetActive(true);
-    }
-
-    public void OnJoinRoomAfterClickBtn(RoomInfo inputInfo)
-    {
-        PhotonNetwork.JoinRoom(inputInfo.Name);
-        
-        CloseAllPanels();
-        loadingTMP.text = ConstantHolder.MESSAGE_JOIN_ROOM;
-        loadingScreen.SetActive(true);
-    }
-
-    public void OnQuitGameBtn()
-    {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.ExitPlaymode();
-#else
-        Application.Quit();
-#endif
-    }
-
-    #endregion
-
-    #region Methods
 
     public void StartCreateRoom()
     {
@@ -176,6 +84,141 @@ public class Launcher : SingletonNetworking<Launcher>
             loadingTMP.text = ConstantHolder.MESSAGE_CREATING_ROOM;
             loadingScreen.SetActive(true);
         }
+    }
+
+    public override void OnCreateRoomFailed(short returnCode, string message)
+    {
+        errorTMP.text = $"{returnCode}: {ConstantHolder.MESSAGE_CREATE_ROOM_FAILED} {message}";
+        CloseAllPanels();
+        errorScreen.SetActive(true);
+    }
+
+    public override void OnJoinedRoom()
+    {
+        CloseAllPanels();
+        roomScreen.SetActive(true);
+
+        roomNameTMP.text = PhotonNetwork.CurrentRoom.Name;
+    }
+
+    #endregion
+
+    #region LEAVE_ROOM
+
+    public void OnLeaveRoomBtn()
+    {
+        PhotonNetwork.LeaveRoom();
+        CloseAllPanels();
+        loadingTMP.text = ConstantHolder.MESSAGE_LEAVING_ROOM;
+        loadingScreen.SetActive(true);
+    }
+
+    public override void OnLeftRoom()
+    {
+        OnBackToMainMenuBtn();
+    }
+
+    #endregion
+
+    #region BROWSE_ROOM
+
+    public void OnOpenRoomBrowserBtn()
+    {
+        CloseAllPanels();
+        roomBrowseScreen.SetActive(true);
+    }
+
+
+    public void OnJoinRoomAfterBrowseBtn(RoomInfo inputInfo)
+    {
+        PhotonNetwork.JoinRoom(inputInfo.Name);
+
+        CloseAllPanels();
+        loadingTMP.text = ConstantHolder.MESSAGE_JOIN_ROOM;
+        loadingScreen.SetActive(true);
+    }
+
+    #endregion
+
+    #region PHOTON_UPDATE_ROOM
+
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    {
+        RoomStatusHandler(clientAvailableRoomList, clientUnavailableRoomList, roomList);
+        for (int i = 0; i < allRoomButtonsList.Count; i++)
+        {
+            for (int j = 0; j < clientUnavailableRoomList.Count; j++)
+            {
+                if (allRoomButtonsList[i].roomName == clientUnavailableRoomList[j].Name)
+                {
+                    Destroy(allRoomButtonsList[i].gameObject);
+                    allRoomButtonsList.Remove(allRoomButtonsList[i]);
+                    clientUnavailableRoomList.Remove(clientUnavailableRoomList[j]);
+                }
+            }
+        }
+
+        for (int i = 0; i < clientAvailableRoomList.Count; i++)
+        {
+            if (clientAvailableRoomList[i].PlayerCount != clientAvailableRoomList[i].MaxPlayers)
+            {
+                RoomButton newButton = Instantiate(roomButtonItem, roomButtonContainer);
+                newButton.SetButtonDetails(clientAvailableRoomList[i]);
+                newButton.gameObject.SetActive(true);
+
+                allRoomButtonsList.Add(newButton);
+            }
+        }
+    }
+
+    private void RoomStatusHandler(List<RoomInfo> clientAvailableRoomList, List<RoomInfo> clientUnavailableRoomList,
+        List<RoomInfo> ServerRoomList)
+    {
+        foreach (var rb in ServerRoomList)
+        {
+            if (!rb.RemovedFromList)
+            {
+                foreach (var rbb in clientAvailableRoomList)
+                {
+                    if (rbb.Name == rb.Name) return;
+                    clientAvailableRoomList.Add(rb);
+                }
+            }
+            else
+            {
+                clientUnavailableRoomList.Add(rb);
+            }
+        }
+    }
+
+    #endregion
+
+
+    #region METHODS
+
+    public void OnBackToMainMenuBtn()
+    {
+        CloseAllPanels();
+        menuBtns.SetActive(true);
+    }
+
+    private void CloseAllPanels()
+    {
+        loadingScreen.SetActive(false);
+        menuBtns.SetActive(false);
+        createRoomScreen.SetActive(false);
+        roomScreen.SetActive(false);
+        errorScreen.SetActive(false);
+        roomBrowseScreen.SetActive(false);
+    }
+
+    public void OnQuitGameBtn()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.ExitPlaymode();
+#else
+        Application.Quit();
+#endif
     }
 
     #endregion
