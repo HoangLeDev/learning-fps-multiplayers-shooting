@@ -49,6 +49,12 @@ public class Launcher : SingletonNetworking<Launcher>
     private List<RoomInfo> clientAvailableRoomList = new List<RoomInfo>();
     private List<RoomInfo> clientUnavailableRoomList = new List<RoomInfo>();
 
+    [Header("Name Input Screen")]
+    //Name Input Screen
+    public GameObject nameInputScreen;
+
+    public TMP_InputField nameInput;
+    private bool isAlreadySetNickName;
 
     #region Main Function Calls
 
@@ -63,7 +69,6 @@ public class Launcher : SingletonNetworking<Launcher>
 
     #endregion
 
-
     #region LOBBY
 
     public override void OnConnectedToMaster()
@@ -75,11 +80,43 @@ public class Launcher : SingletonNetworking<Launcher>
     public override void OnJoinedLobby()
     {
         OnBackToMainMenuBtn();
-        GenerateFakePlayerName();
+        CheckPlayerSetName();
+    }
+
+    private void CheckPlayerSetName()
+    {
+        if (!isAlreadySetNickName)
+        {
+            CloseAllPanels();
+            nameInputScreen.SetActive(true);
+
+            if (PlayerPrefs.HasKey(ConstantHolder.PP_PlayerName))
+            {
+                nameInput.text = PlayerPrefs.GetString(ConstantHolder.PP_PlayerName);
+            }
+        }
+        else
+        {
+            PhotonNetwork.NickName = PlayerPrefs.GetString(ConstantHolder.PP_PlayerName);
+        }
+    }
+
+    public void OnSetNickNameBtn()
+    {
+        if (!string.IsNullOrEmpty(nameInput.text))
+        {
+            PhotonNetwork.NickName = nameInput.text;
+
+            PlayerPrefs.SetString(ConstantHolder.PP_PlayerName, nameInput.text);
+
+            CloseAllPanels();
+            menuBtns.SetActive(true);
+
+            isAlreadySetNickName = true;
+        }
     }
 
     #endregion
-
 
     #region CREATE_ROOM
 
@@ -264,11 +301,7 @@ public class Launcher : SingletonNetworking<Launcher>
         roomScreen.SetActive(false);
         errorScreen.SetActive(false);
         roomBrowseScreen.SetActive(false);
-    }
-
-    private void GenerateFakePlayerName()
-    {
-        PhotonNetwork.NickName = Random.Range(0, 1000).ToString();
+        nameInputScreen.SetActive(false);
     }
 
     public void OnQuitGameBtn()
