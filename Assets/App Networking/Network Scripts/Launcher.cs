@@ -5,6 +5,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
+using System.Linq;
 using Unity.VisualScripting;
 
 public class Launcher : SingletonNetworking<Launcher>
@@ -147,16 +148,10 @@ public class Launcher : SingletonNetworking<Launcher>
         RoomStatusHandler(clientAvailableRoomList, clientUnavailableRoomList, roomList);
         for (int i = 0; i < allRoomButtonsList.Count; i++)
         {
-            for (int j = 0; j < clientUnavailableRoomList.Count; j++)
-            {
-                if (allRoomButtonsList[i].roomName == clientUnavailableRoomList[j].Name)
-                {
-                    Destroy(allRoomButtonsList[i].gameObject);
-                    allRoomButtonsList.Remove(allRoomButtonsList[i]);
-                    clientUnavailableRoomList.Remove(clientUnavailableRoomList[j]);
-                }
-            }
+            Destroy(allRoomButtonsList[i].gameObject);
         }
+
+        allRoomButtonsList.Clear();
 
         for (int i = 0; i < clientAvailableRoomList.Count; i++)
         {
@@ -178,21 +173,23 @@ public class Launcher : SingletonNetworking<Launcher>
         {
             if (!rb.RemovedFromList)
             {
-                foreach (var rbb in clientAvailableRoomList)
-                {
-                    if (rbb.Name == rb.Name) return;
+                if (!clientAvailableRoomList.Contains(rb))
                     clientAvailableRoomList.Add(rb);
-                }
             }
             else
             {
                 clientUnavailableRoomList.Add(rb);
             }
         }
+
+        foreach (var rb in clientUnavailableRoomList)
+        {
+            if (clientAvailableRoomList.Contains(rb))
+                clientAvailableRoomList.Remove(rb);
+        }
     }
 
     #endregion
-
 
     #region METHODS
 
