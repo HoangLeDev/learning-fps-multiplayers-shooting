@@ -7,6 +7,7 @@ using Photon.Realtime;
 using TMPro;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class Launcher : SingletonNetworking<Launcher>
@@ -30,6 +31,8 @@ public class Launcher : SingletonNetworking<Launcher>
     public TMP_Text roomMemberName;
     public Transform roomMemberContainer;
     private List<TMP_Text> allRoomMemberNamesList = new List<TMP_Text>();
+    public string levelToPlay;
+    public GameObject startPlayGameBtn;
 
     [Header("Browse Room")]
     public GameObject roomBrowseScreen;
@@ -63,6 +66,7 @@ public class Launcher : SingletonNetworking<Launcher>
     public override void OnConnectedToMaster()
     {
         PhotonNetwork.JoinLobby();
+        PhotonNetwork.AutomaticallySyncScene = true;
         loadingTMP.text = ConstantHolder.MESSAGE_JOIN_LOBBY;
     }
 
@@ -148,6 +152,15 @@ public class Launcher : SingletonNetworking<Launcher>
 
         roomNameTMP.text = PhotonNetwork.CurrentRoom.Name;
         ListAllPlayerInRoom();
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            startPlayGameBtn.SetActive(true);
+        }
+        else
+        {
+            startPlayGameBtn.SetActive(false);
+        }
     }
 
     private void ListAllPlayerInRoom()
@@ -183,6 +196,11 @@ public class Launcher : SingletonNetworking<Launcher>
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         ListAllPlayerInRoom();
+    }
+
+    public void OnStartPlayGameBtn()
+    {
+        PhotonNetwork.LoadLevel(levelToPlay);
     }
 
     #endregion
