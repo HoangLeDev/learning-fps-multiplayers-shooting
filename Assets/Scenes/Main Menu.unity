@@ -2506,7 +2506,7 @@ MonoBehaviour:
   roomBrowseScreen: {fileID: 728404218}
   roomButtonContainer: {fileID: 260454296}
   roomButtonItem: {fileID: 7163175327441344077, guid: 07724bbe04e56bc4d83c9de2756d0019, type: 3}
-  allRoomButtons: []
+  allRoomButtonsList: []
 --- !u!1 &1044253586
 GameObject:
   m_ObjectHideFlags: 0
@@ -4612,7 +4612,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Content: {fileID: 260454296}
-  m_Horizontal: 1
+  m_Horizontal: 0
   m_Vertical: 1
   m_MovementType: 1
   m_Elasticity: 0.1
