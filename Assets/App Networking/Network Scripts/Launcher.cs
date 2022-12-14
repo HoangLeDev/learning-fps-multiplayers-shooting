@@ -7,6 +7,7 @@ using Photon.Realtime;
 using TMPro;
 using System.Linq;
 using Unity.VisualScripting;
+using Random = UnityEngine.Random;
 
 public class Launcher : SingletonNetworking<Launcher>
 {
@@ -18,21 +19,36 @@ public class Launcher : SingletonNetworking<Launcher>
 
     public TMP_Text loadingTMP;
 
-    public GameObject createRoomScreen;
-    public TMP_InputField roomNameInput;
-
-    public GameObject roomScreen;
-    public TMP_Text roomNameTMP;
-
     public GameObject errorScreen;
     public TMP_Text errorTMP;
 
+    [Header("Create Room")]
+    //Create Room
+    public GameObject createRoomScreen;
+
+    public TMP_InputField roomNameInput;
+
+    [Header("In Room")]
+    //In Room
+    public GameObject roomScreen;
+
+    public TMP_Text roomNameTMP;
+    public TMP_Text roomMemberName;
+    public Transform roomMemberContainer;
+    private List<TMP_Text> allRoomMemberNamesList = new List<TMP_Text>();
+
+
+    [Header("Browse Room")]
+    //Browse Room
     public GameObject roomBrowseScreen;
+
     public Transform roomButtonContainer;
     public RoomButton roomButtonItem;
-    public List<RoomButton> allRoomButtonsList = new List<RoomButton>();
-    public List<RoomInfo> clientAvailableRoomList = new List<RoomInfo>();
-    public List<RoomInfo> clientUnavailableRoomList = new List<RoomInfo>();
+
+    private List<RoomButton> allRoomButtonsList = new List<RoomButton>();
+    private List<RoomInfo> clientAvailableRoomList = new List<RoomInfo>();
+    private List<RoomInfo> clientUnavailableRoomList = new List<RoomInfo>();
+
 
     #region Main Function Calls
 
@@ -59,6 +75,7 @@ public class Launcher : SingletonNetworking<Launcher>
     public override void OnJoinedLobby()
     {
         OnBackToMainMenuBtn();
+        GenerateFakePlayerName();
     }
 
     #endregion
@@ -94,12 +111,52 @@ public class Launcher : SingletonNetworking<Launcher>
         errorScreen.SetActive(true);
     }
 
+    #endregion
+
+    #region IN_ROOM
+
     public override void OnJoinedRoom()
     {
         CloseAllPanels();
         roomScreen.SetActive(true);
 
         roomNameTMP.text = PhotonNetwork.CurrentRoom.Name;
+        ListAllPlayerInRoom();
+    }
+
+    private void ListAllPlayerInRoom()
+    {
+        foreach (TMP_Text mem in allRoomMemberNamesList)
+        {
+            Destroy(mem.gameObject);
+        }
+
+        allRoomMemberNamesList.Clear();
+
+        Player[] players = PhotonNetwork.PlayerList;
+
+        for (int i = 0; i < players.Length; i++)
+        {
+            TMP_Text newPlayerLable = Instantiate(roomMemberName, roomMemberContainer);
+            newPlayerLable.text = players[i].NickName;
+            newPlayerLable.gameObject.SetActive(true);
+
+            allRoomMemberNamesList.Add(newPlayerLable);
+        }
+    }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        TMP_Text newPlayerLable = Instantiate(roomMemberName, roomMemberContainer);
+        newPlayerLable.text = newPlayer.NickName;
+        newPlayerLable.gameObject.SetActive(true);
+
+        allRoomMemberNamesList.Add(newPlayerLable);
+    }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        ListAllPlayerInRoom();
     }
 
     #endregion
@@ -207,6 +264,11 @@ public class Launcher : SingletonNetworking<Launcher>
         roomScreen.SetActive(false);
         errorScreen.SetActive(false);
         roomBrowseScreen.SetActive(false);
+    }
+
+    private void GenerateFakePlayerName()
+    {
+        PhotonNetwork.NickName = Random.Range(0, 1000).ToString();
     }
 
     public void OnQuitGameBtn()
