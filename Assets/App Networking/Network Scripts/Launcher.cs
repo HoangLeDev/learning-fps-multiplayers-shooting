@@ -14,34 +14,25 @@ public class Launcher : SingletonNetworking<Launcher>
     public GameObject menuBtns;
 
     [Header("Screen Fields")]
-    //Screen Fields
     public GameObject loadingScreen;
-
     public TMP_Text loadingTMP;
 
     public GameObject errorScreen;
     public TMP_Text errorTMP;
 
     [Header("Create Room")]
-    //Create Room
     public GameObject createRoomScreen;
-
     public TMP_InputField roomNameInput;
 
     [Header("In Room")]
-    //In Room
     public GameObject roomScreen;
-
     public TMP_Text roomNameTMP;
     public TMP_Text roomMemberName;
     public Transform roomMemberContainer;
     private List<TMP_Text> allRoomMemberNamesList = new List<TMP_Text>();
 
-
     [Header("Browse Room")]
-    //Browse Room
     public GameObject roomBrowseScreen;
-
     public Transform roomButtonContainer;
     public RoomButton roomButtonItem;
 
@@ -50,9 +41,7 @@ public class Launcher : SingletonNetworking<Launcher>
     private List<RoomInfo> clientUnavailableRoomList = new List<RoomInfo>();
 
     [Header("Name Input Screen")]
-    //Name Input Screen
     public GameObject nameInputScreen;
-
     public TMP_InputField nameInput;
     private bool isAlreadySetNickName;
 
@@ -222,7 +211,6 @@ public class Launcher : SingletonNetworking<Launcher>
         CloseAllPanels();
         roomBrowseScreen.SetActive(true);
     }
-
 
     public void OnJoinRoomAfterBrowseBtn(RoomInfo inputInfo)
     {
