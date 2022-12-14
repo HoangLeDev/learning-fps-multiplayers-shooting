@@ -153,14 +153,7 @@ public class Launcher : SingletonNetworking<Launcher>
         roomNameTMP.text = PhotonNetwork.CurrentRoom.Name;
         ListAllPlayerInRoom();
 
-        if (PhotonNetwork.IsMasterClient)
-        {
-            startPlayGameBtn.SetActive(true);
-        }
-        else
-        {
-            startPlayGameBtn.SetActive(false);
-        }
+        CheckCanStartGameAsMasterClient();
     }
 
     private void ListAllPlayerInRoom()
@@ -196,6 +189,18 @@ public class Launcher : SingletonNetworking<Launcher>
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         ListAllPlayerInRoom();
+    }
+
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        CheckCanStartGameAsMasterClient();
+    }
+
+    private void CheckCanStartGameAsMasterClient()
+    {
+        if (PhotonNetwork.IsMasterClient)
+            startPlayGameBtn.SetActive(true);
+        else startPlayGameBtn.SetActive(false);
     }
 
     public void OnStartPlayGameBtn()
