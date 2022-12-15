@@ -1,12 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using Unity.VisualScripting;
 using UnityEngine;
+using Photon.Pun;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviourPunCallbacks
 {
-    [SerializeField] private Transform viewPoint;
+    [SerializeField]
+    private Transform viewPoint;
     public float mouseSensitivity;
     private float verticalRotStore;
     private Vector2 mouseInput;
@@ -24,8 +27,10 @@ public class PlayerController : MonoBehaviour
     public Transform groundCheckPoint;
     public LayerMask groundLayer;
 
-    [SerializeField] private PlayerShooting playerShootManager;
-    [SerializeField] private GameObject crosshair;
+    [SerializeField]
+    private PlayerShooting playerShootManager;
+    [SerializeField]
+    private GameObject crosshair;
 
     private Camera cam;
 
@@ -44,6 +49,7 @@ public class PlayerController : MonoBehaviour
         _selectedGunTmpNum = playerShootManager.selectedGun;
 
         // InitOfflinePlayerSpawnPosition();
+        crosshair = GameObject.Find("Crosshair");
 
         StartCoroutine(ChangeGunModel(_selectedGunTmpNum));
     }
@@ -52,16 +58,19 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        if (photonView.IsMine) return;
         Initialize();
     }
 
     private void LateUpdate()
     {
+        if (!photonView.IsMine) return;
         MovingCamera();
     }
 
     private void Update()
     {
+        if (!photonView.IsMine) return;
         PlayerView();
         PlayerMovement();
         SwitchGun();
@@ -161,7 +170,6 @@ public class PlayerController : MonoBehaviour
 
         charCon.Move(movement * Time.fixedDeltaTime);
     }
-
 
     private void PlayerPhysics()
     {
