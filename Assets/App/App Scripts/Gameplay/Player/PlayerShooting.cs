@@ -57,13 +57,17 @@ public class PlayerShooting : PoolManager
 
     private void OnEnable()
     {
-        InitBulletLine();
+        if (photonView.IsMine)
+            InitBulletLine();
     }
 
     private void OnDestroy()
     {
-        bulletLineRenderer = null;
-        Destroy(currentPlayerBulletLine);
+        if (photonView.IsMine)
+        {
+            bulletLineRenderer = null;
+            Destroy(currentPlayerBulletLine);
+        }
     }
 
     private void InitBulletLine()
