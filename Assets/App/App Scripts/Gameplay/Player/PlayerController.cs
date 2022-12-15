@@ -58,23 +58,29 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        if (photonView.IsMine) return;
-        Initialize();
+        if (photonView.IsMine)
+        {
+            Initialize();
+        }
     }
 
     private void LateUpdate()
     {
-        if (!photonView.IsMine) return;
-        MovingCamera();
+        if (photonView.IsMine)
+        {
+            MovingCamera();
+        }
     }
 
     private void Update()
     {
-        if (!photonView.IsMine) return;
-        PlayerView();
-        PlayerMovement();
-        SwitchGun();
-        playerShootManager.ShootExecute();
+        if (photonView.IsMine)
+        {
+            PlayerView();
+            PlayerMovement();
+            SwitchGun();
+            playerShootManager.ShootExecute();
+        }
     }
 
     private void FixedUpdate()
