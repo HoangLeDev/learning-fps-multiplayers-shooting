@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
         crunchSpeed = 0.3f;
         _selectedGunTmpNum = playerShootManager.selectedGun;
 
-        InitPlayerSpawnPosition();
+        // InitOfflinePlayerSpawnPosition();
 
         StartCoroutine(ChangeGunModel(_selectedGunTmpNum));
     }
@@ -233,11 +233,11 @@ public class PlayerController : MonoBehaviour
 
     #region Others
 
-    private void InitPlayerSpawnPosition()
+    private void InitOfflinePlayerSpawnPosition()
     {
-        Transform newTrans = SpawnManager.I.GetSpawnPosition();
-        transform.position = newTrans.position;
-        transform.rotation = newTrans.rotation;
+        // Transform newTrans = SpawnManager.I.GetSpawnPosition();
+        // transform.position = newTrans.position;
+        // transform.rotation = newTrans.rotation;
     }
 
     private void CrosshairHandler(int selectedNum)

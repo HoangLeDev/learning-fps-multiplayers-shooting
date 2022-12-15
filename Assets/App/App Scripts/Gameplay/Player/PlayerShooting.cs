@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -20,7 +21,10 @@ public class PlayerShooting : PoolManager
     private float bulletCounter;
 
     [SerializeField]
-    private LineRenderer bulletLine;
+    private LineRenderer bulletLineRenderer;
+    [SerializeField]
+    private GameObject bulletLinePrefab;
+    private GameObject currentPlayerBulletLine;
 
     [Header("Recoil")]
     [SerializeField]
@@ -51,6 +55,23 @@ public class PlayerShooting : PoolManager
     public Gun[] allGuns;
     public int selectedGun;
 
+    private void OnEnable()
+    {
+        InitBulletLine();
+    }
+
+    private void OnDestroy()
+    {
+        bulletLineRenderer = null;
+        Destroy(currentPlayerBulletLine);
+    }
+
+    private void InitBulletLine()
+    {
+        currentPlayerBulletLine = Instantiate(bulletLinePrefab, Vector3.zero, Quaternion.identity);
+        bulletLineRenderer = currentPlayerBulletLine.GetComponent<LineRenderer>();
+    }
+
     public void ShootExecute()
     {
         if (allGuns[selectedGun].muzzleFlash.activeInHierarchy)
@@ -63,13 +84,13 @@ public class PlayerShooting : PoolManager
             }
         }
 
-        if (bulletLine.gameObject.activeInHierarchy)
+        if (bulletLineRenderer.gameObject.activeInHierarchy)
         {
             bulletCounter -= Time.deltaTime;
             if (bulletCounter <= 0)
             {
                 bulletCounter = 0;
-                bulletLine.gameObject.SetActive(false);
+                bulletLineRenderer.gameObject.SetActive(false);
             }
         }
 
@@ -163,9 +184,9 @@ public class PlayerShooting : PoolManager
         allGuns[selectedGun].muzzleFlash.SetActive(true);
 
         //Effect
-        bulletLine.gameObject.SetActive(true);
-        bulletLine.SetPosition(0, allGuns[selectedGun].muzzleFlash.transform.position);
-        bulletLine.SetPosition(1, hitPoint);
+        bulletLineRenderer.gameObject.SetActive(true);
+        bulletLineRenderer.SetPosition(0, allGuns[selectedGun].muzzleFlash.transform.position);
+        bulletLineRenderer.SetPosition(1, hitPoint);
         muzzleCounter = muzzleDisplayTime;
         bulletCounter = bulletDisplayTime;
     }
