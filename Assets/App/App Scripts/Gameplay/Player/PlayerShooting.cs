@@ -25,7 +25,6 @@ public class PlayerShooting : PoolManager
     [Header("Recoil")]
     [SerializeField]
     private bool isAiming;
-
     private Vector3 currentRotation;
     private Vector3 targetRotation;
 
@@ -49,9 +48,7 @@ public class PlayerShooting : PoolManager
     private float returnSpeed;
 
     [Header("Guns")]
-    //Guns
     public Gun[] allGuns;
-
     public int selectedGun;
 
     public void ShootExecute()
