@@ -19,33 +19,40 @@ public class PlayerShooting : PoolManager
     public float bulletDisplayTime;
     private float bulletCounter;
 
-    [SerializeField] private LineRenderer bulletLine;
+    [SerializeField]
+    private LineRenderer bulletLine;
 
     [Header("Recoil")]
-    //Recoil
     [SerializeField]
     private bool isAiming;
 
     private Vector3 currentRotation;
     private Vector3 targetRotation;
 
-    [SerializeField] private float recoilX;
-    [SerializeField] private float recoilY;
-    [SerializeField] private float recoilZ;
+    [SerializeField]
+    private float recoilX;
+    [SerializeField]
+    private float recoilY;
+    [SerializeField]
+    private float recoilZ;
 
-    [SerializeField] private float aimRecoilX;
-    [SerializeField] private float aimRecoilY;
-    [SerializeField] private float aimRecoilZ;
+    [SerializeField]
+    private float aimRecoilX;
+    [SerializeField]
+    private float aimRecoilY;
+    [SerializeField]
+    private float aimRecoilZ;
 
-    [SerializeField] private float snappiness;
-    [SerializeField] private float returnSpeed;
+    [SerializeField]
+    private float snappiness;
+    [SerializeField]
+    private float returnSpeed;
 
     [Header("Guns")]
     //Guns
     public Gun[] allGuns;
 
     public int selectedGun;
-
 
     public void ShootExecute()
     {
@@ -138,7 +145,7 @@ public class PlayerShooting : PoolManager
              * the 1st place of OBJ in World space, it will never change.
              * 2. To take the realtime transform.forward, need to add the OBJ.transform.position
              */
-            
+
             // Cover when player shoot to the Sky
             hitPoint = cam.transform.position + (cam.transform.forward * 30f);
         }
