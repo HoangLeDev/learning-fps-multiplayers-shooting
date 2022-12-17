@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 5511406294908854200}
   m_Layer: 6
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -271,6 +271,7 @@ MonoBehaviour:
   bulletDisplayTime: 0.01666667
   bulletLineRenderer: {fileID: 0}
   bulletLinePrefab: {fileID: 610310142079142911, guid: c04037d2e228c534e956411fcf045886, type: 3}
+  playerHitImpact: {fileID: 6384382924308920176, guid: e7c58dec5a655a241aafeca2e620a3a1, type: 3}
   isAiming: 0
   recoilX: -2
   recoilY: 2

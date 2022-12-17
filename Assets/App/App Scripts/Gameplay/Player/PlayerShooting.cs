@@ -1,4 +1,5 @@
 using System;
+using Photon.Pun;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -25,6 +26,8 @@ public class PlayerShooting : PoolManager
     [SerializeField]
     private GameObject bulletLinePrefab;
     private GameObject currentPlayerBulletLine;
+
+    public GameObject playerHitImpact;
 
     [Header("Recoil")]
     [SerializeField]
@@ -156,8 +159,16 @@ public class PlayerShooting : PoolManager
         {
             hitPoint = hit.point;
             // Debug.Log("We hit " + hit.collider.gameObject.name);
-            PoolSpawn(bulletImpactEffect, hit.point + (hit.normal * 0.02f),
-                Quaternion.LookRotation(hit.normal, Vector3.up));
+
+            if (hit.collider.gameObject.tag == "Player")
+            {
+                PhotonNetwork.Instantiate(playerHitImpact.name, hit.point, Quaternion.identity);
+            }
+            else
+            {
+                PoolSpawn(bulletImpactEffect, hit.point + (hit.normal * 0.02f),
+                    Quaternion.LookRotation(hit.normal, Vector3.up));
+            }
         }
         else
         {
