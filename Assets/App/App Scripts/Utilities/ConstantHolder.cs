@@ -14,9 +14,9 @@ public static class ConstantHolder
     public const string MESSAGE_CREATE_ROOM_FAILED = "Failed to create room: ";
     public const string MESSAGE_LEAVING_ROOM = "Leaving Room...";
     public const string MESSAGE_JOIN_ROOM = "Joining Room...";
+    public const string MESSAGE_WHEN_DEATH = "You were killed by ";
 
     #endregion
-
 
     #region PlayerPrefs_STORAGE
 

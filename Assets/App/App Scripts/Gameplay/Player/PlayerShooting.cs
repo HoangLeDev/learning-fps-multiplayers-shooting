@@ -249,7 +249,7 @@ public class PlayerShooting : PoolManager
     {
         if (photonView.IsMine)
         {
-            PlayerSpawner.I.PlayerDie();
+            PlayerSpawner.I.PlayerDie(attacker);
         }
     }
 

@@ -7,14 +7,9 @@ using TMPro;
 
 public class UIController : Singleton<UIController>
 {
-    public static UIController I;
     public Slider weaponSlider;
     public TextMeshProUGUI overheatedText;
 
-    private void Awake()
-    {
-        I = this;
-    }
-    
-    
+    public GameObject deathScreen;
+    public TMP_Text deathTMP;
 }
