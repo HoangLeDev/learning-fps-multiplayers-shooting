@@ -73,6 +73,8 @@ public class PlayerShooting : PoolManager
         }
     }
 
+    #region SHOOT
+
     private void InitBulletLine()
     {
         currentPlayerBulletLine = Instantiate(bulletLinePrefab, Vector3.zero, Quaternion.identity);
@@ -163,6 +165,7 @@ public class PlayerShooting : PoolManager
             if (hit.collider.gameObject.tag == "Player")
             {
                 PhotonNetwork.Instantiate(playerHitImpact.name, hit.point, Quaternion.identity);
+                hit.collider.gameObject.GetPhotonView().RPC("DealDamage", RpcTarget.All, photonView.Owner.NickName);
             }
             else
             {
@@ -206,6 +209,15 @@ public class PlayerShooting : PoolManager
         bulletCounter = bulletDisplayTime;
     }
 
+    private void AmmoFill(float heatAmount)
+    {
+        UIController.I.weaponSlider.value = heatAmount / maxHeat;
+    }
+
+    #endregion
+
+    #region RECOIL
+
     private void RecoilShoot()
     {
         // targetRotation = Vector3.Lerp(targetRotation, Vector3.up, returnSpeed * Time.deltaTime);
@@ -223,8 +235,23 @@ public class PlayerShooting : PoolManager
                 Random.Range(-recoilZ, recoilZ));
     }
 
-    private void AmmoFill(float heatAmount)
+    #endregion
+
+    #region DAMAGE
+
+    [PunRPC]
+    public void DealDamage(string attacker)
     {
-        UIController.I.weaponSlider.value = heatAmount / maxHeat;
+        TakeDamage(attacker);
     }
+
+    public void TakeDamage(string attacker)
+    {
+        if (photonView.IsMine)
+        {
+            PlayerSpawner.I.PlayerDie();
+        }
+    }
+
+    #endregion
 }

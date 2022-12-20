@@ -28,7 +28,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     protected virtual void Awake()
     {
         instance = this as T;
-        if (instance = null)
+        if (instance == null)
             Destroy(gameObject);
     }
 }
@@ -52,7 +52,7 @@ public class SingletonNetworking<T> : MonoBehaviourPunCallbacks where T : MonoBe
     protected virtual void Awake()
     {
         instance = this as T;
-        if (instance = null)
+        if (instance == null)
             Destroy(gameObject);
     }
 }

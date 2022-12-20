@@ -5,6 +5,7 @@ public class PlayerSpawner : Singleton<PlayerSpawner>
 {
     public GameObject playerPrefab;
     private GameObject player;
+    [SerializeField] private GameObject deathEffect;
 
     private void Start()
     {
@@ -19,5 +20,12 @@ public class PlayerSpawner : Singleton<PlayerSpawner>
         Transform spawnPoint = SpawnManager.I.GetSpawnPosition();
 
         player = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint.position, spawnPoint.rotation);
+    }
+
+    public void PlayerDie()
+    {
+        PhotonNetwork.Instantiate(deathEffect.name, player.transform.position, Quaternion.identity);
+        PhotonNetwork.Destroy(player);
+        SpawnPlayer();
     }
 }
