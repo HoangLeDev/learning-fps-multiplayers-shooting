@@ -275,12 +275,13 @@ MonoBehaviour:
   isAiming: 0
   recoilX: -2
   recoilY: 2
-  recoilZ: 0.35
+  recoilZ: 7
+  kickBackZ: 0.2
   aimRecoilX: 0
   aimRecoilY: 0
   aimRecoilZ: 0
-  snappiness: 6
-  returnSpeed: 2
+  snappiness: 5
+  returnSpeed: 8
   allGuns:
   - {fileID: 990968568942592636}
   - {fileID: 990968569446791525}

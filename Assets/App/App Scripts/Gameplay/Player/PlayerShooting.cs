@@ -1,6 +1,7 @@
 using System;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
 public class PlayerShooting : PoolManager
@@ -32,8 +33,10 @@ public class PlayerShooting : PoolManager
     [Header("Recoil")]
     [SerializeField]
     private bool isAiming;
-    private Vector3 currentRotation;
-    private Vector3 targetRotation;
+    private Vector3 initialGunPosition;
+
+    private Vector3 currentRotation, targetRotation;
+    private Vector3 currentPosition, targetPosition;
 
     [SerializeField]
     private float recoilX;
@@ -41,6 +44,8 @@ public class PlayerShooting : PoolManager
     private float recoilY;
     [SerializeField]
     private float recoilZ;
+    [SerializeField]
+    private float kickBackZ;
 
     [SerializeField]
     private float aimRecoilX;
@@ -61,7 +66,10 @@ public class PlayerShooting : PoolManager
     private void OnEnable()
     {
         if (photonView.IsMine)
+        {
+            initialGunPosition = allGuns[selectedGun].transform.position;
             InitBulletLine();
+        }
     }
 
     private void OnDestroy()
@@ -151,8 +159,8 @@ public class PlayerShooting : PoolManager
         //half x, half y, zero z (Middle of Camera)
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
         ray.origin = cam.transform.position;
-        SetTargetRecoil();
-        RecoilShoot();
+        // SetTargetRecoil();
+        // RecoilShoot();
 
 
         Vector3 hitPoint = Vector3.zero; // Cover when player shoot to the Sky
@@ -172,6 +180,8 @@ public class PlayerShooting : PoolManager
                 PoolSpawn(bulletImpactEffect, hit.point + (hit.normal * 0.02f),
                     Quaternion.LookRotation(hit.normal, Vector3.up));
             }
+
+            StartRecoil();
         }
         else
         {
@@ -216,6 +226,14 @@ public class PlayerShooting : PoolManager
 
     #endregion
 
+    private void Update()
+    {
+        targetRotation = Vector3.Lerp(targetRotation, Vector3.zero, Time.deltaTime * returnSpeed);
+        currentRotation = Vector3.Slerp(currentRotation, targetRotation, Time.fixedDeltaTime * snappiness);
+        Camera.current.transform.localRotation = Quaternion.Euler(currentRotation);
+        BackRecoil();
+    }
+
     #region RECOIL
 
     private void RecoilShoot()
@@ -223,6 +241,19 @@ public class PlayerShooting : PoolManager
         // targetRotation = Vector3.Lerp(targetRotation, Vector3.up, returnSpeed * Time.deltaTime);
         // currentRotation = Vector3.Slerp(currentRotation, targetRotation, snappiness * Time.deltaTime);
         // transform.localRotation = Quaternion.Euler(currentRotation);
+    }
+
+    private void StartRecoil()
+    {
+        targetPosition -= new Vector3(0, 0, kickBackZ);
+        targetRotation += new Vector3(recoilX, Random.Range(-recoilX, recoilY), Random.Range(-recoilZ, recoilZ));
+    }
+
+    private void BackRecoil()
+    {
+        targetPosition = Vector3.Lerp(targetPosition, initialGunPosition, Time.deltaTime * returnSpeed);
+        targetRotation = Vector3.Lerp(currentPosition, targetPosition, Time.fixedDeltaTime * snappiness);
+        Camera.current.transform.localPosition = currentPosition;
     }
 
     private void SetTargetRecoil()
